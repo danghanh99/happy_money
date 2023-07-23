@@ -12,6 +12,12 @@ dependencies:
 
   cupertino_icons: ^1.0.2
   persistent_bottom_nav_bar: ^5.0.2
+  flutter_screenutil: ^5.8.4
+  diamond_bottom_bar: ^1.0.0
+  bottom_bar_with_sheet: ^2.4.0
+  modal_bottom_sheet: ^2.1.2
+  fk_toggle: ^0.1.4
+  toggle_switch: ^2.1.0
 
 dev_dependencies:
   flutter_test:
