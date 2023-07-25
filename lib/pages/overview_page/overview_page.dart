@@ -35,7 +35,7 @@ class OverviewPage extends StatelessWidget {
               SizedBox(
                 height: 50.h,
               ),
-              ExpenseReportPage()
+              const ExpenseReportPage()
             ],
           ),
         ),

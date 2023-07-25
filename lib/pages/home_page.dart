@@ -2,7 +2,7 @@ import 'package:diamond_bottom_bar/diamond_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:happy_money/components/custom_bottom_bar_with_sheet.dart';
-import 'package:happy_money/pages/calendar_page/calendar_page.dart';
+import 'package:happy_money/pages/report_page/report_page.dart';
 import 'package:happy_money/pages/overview_page/overview_page.dart';
 import 'package:happy_money/pages/budget_page/budget_page.dart';
 import 'package:happy_money/pages/setting_page/setting_page.dart';
@@ -81,8 +81,8 @@ class _HomePageState extends State<HomePage> {
                     label: 'Overview',
                   ),
                   BottomBarWithSheetItem(
-                    icon: Icons.calendar_month,
-                    label: 'Calendar',
+                    icon: Icons.pie_chart_rounded,
+                    label: 'Report',
                   ),
                   BottomBarWithSheetItem(
                     icon: Icons.wallet,
@@ -105,7 +105,7 @@ class _HomePageState extends State<HomePage> {
       if (index == 0) {
         _selectedWidget = const OverviewPage();
       } else if (index == 1) {
-        _selectedWidget = const CalendarPage();
+        _selectedWidget = const ReportPage();
       } else if (index == 2) {
         _selectedWidget = const BudgetPage();
       } else if (index == 3) {
