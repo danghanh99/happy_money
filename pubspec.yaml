@@ -15,17 +15,18 @@ dependencies:
   flutter_screenutil: ^5.8.4
   diamond_bottom_bar: ^1.0.0
   bottom_bar_with_sheet: ^2.4.0
-  modal_bottom_sheet: ^2.1.2
   fk_toggle: ^0.1.4
   toggle_switch: ^2.1.0
   syncfusion_flutter_calendar: ^22.1.39
-  # pie_chart: ^5.3.2
+  flutter_datetime_picker: ^1.5.1
+  flutter_datetime_picker_plus: ^2.0.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_lints: ^2.0.0
+dependency_overrides:
+  modal_bottom_sheet: ^3.0.0-pre
 
 flutter:
   uses-material-design: true

@@ -1,4 +1,3 @@
-import 'package:diamond_bottom_bar/diamond_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:happy_money/components/custom_bottom_bar_with_sheet.dart';
@@ -7,6 +6,9 @@ import 'package:happy_money/pages/overview_page/overview_page.dart';
 import 'package:happy_money/pages/budget_page/budget_page.dart';
 import 'package:happy_money/pages/setting_page/setting_page.dart';
 import 'package:bottom_bar_with_sheet/bottom_bar_with_sheet.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+
+import 'add_transaction_page/add_transaction_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
@@ -73,7 +75,13 @@ class _HomePageState extends State<HomePage> {
                   onPressed(index);
                 },
                 onClickAdd: () {
-                  print('index');
+                  showMaterialModalBottomSheet(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(16.0.sp),
+                              topRight: Radius.circular(16.0.sp))),
+                      context: context,
+                      builder: (context) => AddTransactionPage());
                 },
                 items: const [
                   BottomBarWithSheetItem(
