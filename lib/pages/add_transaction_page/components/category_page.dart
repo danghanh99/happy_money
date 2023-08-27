@@ -1,15 +1,16 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:happy_money/data/models/transactionn_dto.dart';
 
 class CategoryPage extends StatefulWidget {
   const CategoryPage({
     super.key,
-    this.child,
     required this.goToCategory,
+    required this.transactionDTO,
   });
 
-  final Widget? child;
+  final TransactionDTO transactionDTO;
   final Function goToCategory;
 
   @override
@@ -30,10 +31,15 @@ class _CategoryPageState extends State<CategoryPage> {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(
-          Icons.rounded_corner_outlined,
-          size: 50.sp,
-        ),
+        widget.transactionDTO.category == null
+            ? Icon(
+                Icons.rounded_corner_outlined,
+                size: 50.sp,
+              )
+            : Icon(
+                Icons.home,
+                size: 50.sp,
+              ),
         SizedBox(
           width: 10.w,
         ),
@@ -61,10 +67,14 @@ class _CategoryPageState extends State<CategoryPage> {
                       Column(
                         children: [
                           Text(
-                            "Select Category",
+                            widget.transactionDTO.category == null
+                                ? "Select Category"
+                                : widget.transactionDTO.category!.name,
                             style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 20.sp,
+                              color: widget.transactionDTO.category == null
+                                  ? Colors.grey
+                                  : Colors.black,
+                              fontSize: 22.sp,
                               fontWeight: FontWeight.bold,
                             ),
                           ),

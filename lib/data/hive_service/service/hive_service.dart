@@ -20,7 +20,7 @@ class HiveService {
   void seedHive() {
     if (WalletDataSource.getListWalletDTO().isEmpty) {
       WalletDTOHive.addWalletDTO(
-        name: 'Wallet',
+        name: 'Cash',
         isMainWallet: true,
       );
 

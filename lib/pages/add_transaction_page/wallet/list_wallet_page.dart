@@ -1,34 +1,32 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:happy_money/data/models/category_dto.dart';
-import 'package:happy_money/pages/add_transaction_page/list_category/components/category_item.dart';
+import 'package:happy_money/data/models/wallet_dto.dart';
+import 'components/wallet_item.dart';
 
-import '../../../data/hive_service/data_source/category_data_source.dart';
-
-class ListCategoryPage extends StatefulWidget {
-  const ListCategoryPage({
+class ListWalletPage extends StatefulWidget {
+  const ListWalletPage({
     super.key,
     this.child,
     required this.goToAddPage,
-    required this.setCategory,
+    required this.setWallet,
+    required this.listWallet,
   });
 
   final Widget? child;
   final Function goToAddPage;
-  final Function(CategoryDTO) setCategory;
+  final Function(WalletDTO) setWallet;
+  final List<WalletDTO> listWallet;
 
   @override
-  State<ListCategoryPage> createState() => _ListCategoryPageState();
+  State<ListWalletPage> createState() => _ListWalletPageState();
 }
 
-class _ListCategoryPageState extends State<ListCategoryPage> {
-  List<CategoryDTO> listCategory = [];
+class _ListWalletPageState extends State<ListWalletPage> {
   int? selectedCategoryIndex;
   @override
   void initState() {
     super.initState();
-    listCategory = CategoryDataSource.getListCategoryDTO();
   }
 
   @override
@@ -78,7 +76,7 @@ class _ListCategoryPageState extends State<ListCategoryPage> {
                     ),
                   ),
                   Text(
-                    "Categories",
+                    "Wallets",
                     style: TextStyle(
                       fontSize: 20.sp,
                       fontWeight: FontWeight.bold,
@@ -106,17 +104,17 @@ class _ListCategoryPageState extends State<ListCategoryPage> {
             padding: EdgeInsets.zero,
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
-            itemCount: listCategory.length,
+            itemCount: widget.listWallet.length,
             itemBuilder: (context, index) {
-              return CategoryItem(
-                name: listCategory[index].name,
-                iconPath: listCategory[index].iconPath,
+              return WalletItem(
+                name: widget.listWallet[index].name,
+                iconPath: widget.listWallet[index].iconPath,
                 checked: selectedCategoryIndex == index,
                 onTap: () {
                   setState(() {
                     selectedCategoryIndex = index;
                   });
-                  widget.setCategory.call(listCategory[index]);
+                  widget.setWallet.call(widget.listWallet[index]);
                   widget.goToAddPage.call();
                 },
               );

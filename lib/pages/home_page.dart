@@ -7,7 +7,6 @@ import 'package:happy_money/pages/budget_page/budget_page.dart';
 import 'package:happy_money/pages/setting_page/setting_page.dart';
 import 'package:bottom_bar_with_sheet/bottom_bar_with_sheet.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-
 import '../data/hive_service/data_source/wallet_data_source.dart';
 import '../data/models/wallet_dto.dart';
 import 'add_transaction_page/add_transaction_page.dart';
@@ -25,9 +24,10 @@ class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
   late Widget _selectedWidget;
   final _bottomBarController = BottomBarWithSheetController(initialIndex: 0);
-
+  List<WalletDTO> listWallet = [];
   @override
   void initState() {
+    listWallet = WalletDataSource.getListWalletDTO();
     _selectedWidget = const OverviewPage();
     super.initState();
   }
@@ -83,7 +83,9 @@ class _HomePageState extends State<HomePage> {
                               topLeft: Radius.circular(16.0.sp),
                               topRight: Radius.circular(16.0.sp))),
                       context: context,
-                      builder: (context) => AddTransactionPage());
+                      builder: (context) => AddTransactionPage(
+                            listWalletDTO: listWallet,
+                          ));
                 },
                 items: const [
                   BottomBarWithSheetItem(
