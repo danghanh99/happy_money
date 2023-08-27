@@ -1,6 +1,6 @@
 import 'package:happy_money/data/models/wallet_dto.dart';
 
-import 'boxes.dart';
+import '../boxes.dart';
 
 class WalletDTOHive {
   static Future<int> addWalletDTO({

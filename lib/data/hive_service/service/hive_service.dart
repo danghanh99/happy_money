@@ -1,9 +1,9 @@
-import 'dart:io';
-import 'package:happy_money/data/hive_service/wallet_dto_hive.dart';
+import 'package:happy_money/data/hive_service/service/category_dto_hive.dart';
+import 'package:happy_money/data/hive_service/service/wallet_dto_hive.dart';
 import 'package:happy_money/data/models/wallet_dto.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-import 'data_source/wallet_data_source.dart';
+import '../data_source/wallet_data_source.dart';
 
 class HiveService {
   Future<void> registerAdapterHive() async {
@@ -25,6 +25,9 @@ class HiveService {
         name: 'Mizuho',
         isMainWallet: false,
       );
+
+      CategoryDTOHive.addCategoryDTO(name: "Food");
+      CategoryDTOHive.addCategoryDTO(name: "Salary");
     }
   }
 }
