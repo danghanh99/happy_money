@@ -7,7 +7,7 @@ class TransactionDTOHive {
   static Future<int> addTransactionDTO({
     required bool isMainTransaction,
     required int amount,
-    required CategoryDTO category,
+    CategoryDTO? category,
     required String note,
     required DateTime createdAt,
     required WalletDTO wallet,

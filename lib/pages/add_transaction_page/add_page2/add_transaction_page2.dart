@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:happy_money/data/hive_service/service/transaction_dto_hive.dart';
 import 'package:happy_money/data/models/transactionn_dto.dart';
 import 'package:happy_money/pages/add_transaction_page/add_page2/amount.dart';
 import 'package:happy_money/pages/add_transaction_page/add_page2/header.dart';
@@ -45,7 +46,17 @@ class _AddTransactionPage2State extends State<AddTransactionPage2> {
       height: 800.h,
       child: Column(
         children: [
-          Header(onSave: () {}),
+          Header(onSave: () {
+            TransactionDTOHive.addTransactionDTO(
+              isMainTransaction: false,
+              amount: widget.transactionDTO.amount ?? 0,
+              category: widget.transactionDTO.category,
+              note: widget.transactionDTO.note ?? "",
+              createdAt: widget.transactionDTO.createdAt ?? DateTime.now(),
+              wallet: widget.transactionDTO.wallet!,
+            );
+            Navigator.pop(context);
+          }),
           SizedBox(
             height: 30.h,
           ),
