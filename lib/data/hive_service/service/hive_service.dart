@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:happy_money/data/hive_service/service/category_dto_hive.dart';
 import 'package:happy_money/data/hive_service/service/wallet_dto_hive.dart';
 import 'package:happy_money/data/models/category_dto.dart';
@@ -32,8 +33,16 @@ class HiveService {
         isMainWallet: false,
       );
 
-      CategoryDTOHive.addCategoryDTO(name: "Food");
-      CategoryDTOHive.addCategoryDTO(name: "Salary");
+      CategoryDTOHive.addCategoryDTO(
+        name: "Food",
+        color: Colors.yellow,
+        isSpending: true,
+      );
+      CategoryDTOHive.addCategoryDTO(
+        name: "Salary",
+        color: Colors.green,
+        isSpending: false,
+      );
     }
   }
 }

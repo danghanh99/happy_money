@@ -19,17 +19,23 @@ class CategoryDTOAdapter extends TypeAdapter<CategoryDTO> {
     return CategoryDTO(
       name: fields[10] as String,
       iconPath: fields[11] as String?,
+      colorValue: fields[12] as int?,
+      isSpending: fields[13] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, CategoryDTO obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(4)
       ..writeByte(10)
       ..write(obj.name)
       ..writeByte(11)
-      ..write(obj.iconPath);
+      ..write(obj.iconPath)
+      ..writeByte(12)
+      ..write(obj.colorValue)
+      ..writeByte(13)
+      ..write(obj.isSpending);
   }
 
   @override
