@@ -365,7 +365,9 @@ class _ReportPageState extends State<ReportPage> {
                                         SizedBox(
                                           height: 20.h,
                                         ),
-                                        listTransaction.isEmpty
+                                        listCycle[currentIndex]
+                                                .listTransactionDTO
+                                                .isEmpty
                                             ? Container()
                                             : Row(
                                                 mainAxisAlignment:
@@ -389,17 +391,21 @@ class _ReportPageState extends State<ReportPage> {
                                                   ),
                                                 ],
                                               ),
-                                        listTransaction.isEmpty ||
+                                        listCycle[currentIndex]
+                                                    .listTransactionDTO
+                                                    .isEmpty ||
                                                 !showChartStatus
                                             ? Container()
                                             : PieChart(
-                                                dataMap:
-                                                    setDataMap(listTransaction),
+                                                dataMap: setDataMap(
+                                                    listCycle[currentIndex]
+                                                        .listTransactionDTO),
                                                 animationDuration:
                                                     Duration(milliseconds: 300),
                                                 chartRadius: 250.w,
                                                 colorList: setColorList(
-                                                    listTransaction),
+                                                    listCycle[currentIndex]
+                                                        .listTransactionDTO),
                                                 initialAngleInDegree: 0,
                                                 chartType: ChartType.disc,
                                                 ringStrokeWidth: 100.w,

@@ -33,14 +33,82 @@ class HiveService {
         isMainWallet: false,
       );
 
+      //Spending
       CategoryDTOHive.addCategoryDTO(
         name: "Food",
-        color: Colors.yellow,
+        color: const Color.fromARGB(255, 59, 255, 131),
         isSpending: true,
       );
       CategoryDTOHive.addCategoryDTO(
+        name: "Water Bill",
+        color: Colors.blue,
+        isSpending: true,
+      );
+      CategoryDTOHive.addCategoryDTO(
+        name: "Phone Bill",
+        color: Colors.red,
+        isSpending: true,
+      );
+      CategoryDTOHive.addCategoryDTO(
+        name: "Electricity Bill",
+        color: Colors.brown,
+        isSpending: true,
+      );
+      CategoryDTOHive.addCategoryDTO(
+        name: "Gas Bill",
+        color: Colors.orange,
+        isSpending: true,
+      );
+      CategoryDTOHive.addCategoryDTO(
+        name: "Transportation",
+        color: Colors.green,
+        isSpending: true,
+      );
+      CategoryDTOHive.addCategoryDTO(
+        name: "Education",
+        color: Colors.pink,
+        isSpending: true,
+      );
+      CategoryDTOHive.addCategoryDTO(
+        name: "Home Service",
+        color: const Color.fromARGB(255, 85, 39, 176),
+        isSpending: true,
+      );
+      CategoryDTOHive.addCategoryDTO(
+        name: "Medical",
+        color: Colors.white,
+        isSpending: true,
+      );
+      CategoryDTOHive.addCategoryDTO(
+        name: "Sport",
+        color: Colors.greenAccent,
+        isSpending: true,
+      );
+      CategoryDTOHive.addCategoryDTO(
+        name: "Other Expense",
+        color: Colors.grey,
+        isSpending: true,
+      );
+      CategoryDTOHive.addCategoryDTO(
+        name: "Loan",
+        color: Colors.red,
+        isSpending: true,
+      );
+
+      //Income
+      CategoryDTOHive.addCategoryDTO(
         name: "Salary",
         color: Colors.green,
+        isSpending: false,
+      );
+      CategoryDTOHive.addCategoryDTO(
+        name: "Other Income",
+        color: const Color.fromARGB(255, 186, 220, 187),
+        isSpending: false,
+      );
+      CategoryDTOHive.addCategoryDTO(
+        name: "Debt",
+        color: Color.fromARGB(255, 5, 93, 8),
         isSpending: false,
       );
     }
