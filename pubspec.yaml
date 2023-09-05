@@ -27,6 +27,7 @@ dependencies:
   currency_text_input_formatter: ^2.1.10
   intl:
   flutter_switch:
+  carousel_slider: ^4.2.1
 
 dev_dependencies:
   flutter_test:

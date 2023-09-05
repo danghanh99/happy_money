@@ -1,6 +1,17 @@
-class Cycle {
-  final DateTime start;
-  final DateTime end;
+import 'package:happy_money/data/models/transactionn_dto.dart';
 
-  Cycle({required this.start, required this.end});
+class Cycle {
+  Cycle({
+    required this.year,
+    required this.month,
+    required this.from,
+    required this.to,
+    required this.listTransactionDTO,
+  });
+
+  late int year;
+  late int month;
+  late DateTime from;
+  late DateTime to;
+  late List<TransactionDTO> listTransactionDTO;
 }
