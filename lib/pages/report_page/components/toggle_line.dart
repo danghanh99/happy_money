@@ -4,11 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class ToggleLine extends StatefulWidget {
   const ToggleLine({
     super.key,
-    this.child,
+    required this.changeToggle,
   });
 
-  final Widget? child;
-
+  final Function() changeToggle;
   @override
   State<ToggleLine> createState() => _ToggleLineState();
 }
@@ -32,6 +31,7 @@ class _ToggleLineState extends State<ToggleLine> {
               setState(() {
                 isIncome = true;
               });
+              widget.changeToggle.call();
             }
           },
           child: Container(
@@ -65,6 +65,7 @@ class _ToggleLineState extends State<ToggleLine> {
               setState(() {
                 isIncome = false;
               });
+              widget.changeToggle.call();
             }
           },
           child: Container(

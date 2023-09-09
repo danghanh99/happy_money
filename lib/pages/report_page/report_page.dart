@@ -34,6 +34,7 @@ class _ReportPageState extends State<ReportPage> {
   List<Cycle> listCycle = [];
   int currentCycleIndex = 0;
   DateTime currentDate = DateTime.now();
+  bool showIncome = true;
 
   @override
   void initState() {
@@ -361,12 +362,20 @@ class _ReportPageState extends State<ReportPage> {
                                         SizedBox(
                                           height: 20.h,
                                         ),
-                                        const ToggleLine(),
+                                        ToggleLine(
+                                          changeToggle: () {
+                                            setState(() {
+                                              showIncome = !showIncome;
+                                            });
+                                          },
+                                        ),
                                         SizedBox(
                                           height: 20.h,
                                         ),
-                                        listCycle[currentIndex]
-                                                .listTransactionDTO
+                                        convertList(
+                                                    listCycle[currentIndex]
+                                                        .listTransactionDTO,
+                                                    showIncome)
                                                 .isEmpty
                                             ? Container()
                                             : Row(
@@ -391,21 +400,28 @@ class _ReportPageState extends State<ReportPage> {
                                                   ),
                                                 ],
                                               ),
-                                        listCycle[currentIndex]
-                                                    .listTransactionDTO
+                                        convertList(
+                                                        listCycle[currentIndex]
+                                                            .listTransactionDTO,
+                                                        showIncome)
                                                     .isEmpty ||
                                                 !showChartStatus
                                             ? Container()
                                             : PieChart(
                                                 dataMap: setDataMap(
-                                                    listCycle[currentIndex]
-                                                        .listTransactionDTO),
+                                                  convertList(
+                                                      listCycle[currentIndex]
+                                                          .listTransactionDTO,
+                                                      showIncome),
+                                                ),
                                                 animationDuration:
                                                     Duration(milliseconds: 300),
                                                 chartRadius: 250.w,
                                                 colorList: setColorList(
-                                                    listCycle[currentIndex]
-                                                        .listTransactionDTO),
+                                                    convertList(
+                                                        listCycle[currentIndex]
+                                                            .listTransactionDTO,
+                                                        showIncome)),
                                                 initialAngleInDegree: 0,
                                                 chartType: ChartType.disc,
                                                 ringStrokeWidth: 100.w,
@@ -427,15 +443,20 @@ class _ReportPageState extends State<ReportPage> {
                                           padding: EdgeInsets.zero,
                                           scrollDirection: Axis.vertical,
                                           shrinkWrap: true,
-                                          itemCount:
-                                              listTransactionModel.length,
+                                          itemCount: convertList2(
+                                                  listTransactionModel,
+                                                  showIncome)
+                                              .length,
                                           itemBuilder: (context, index) {
                                             return Container(
                                               decoration: BoxDecoration(
                                                 color: Color(
-                                                    listTransactionModel[index]
-                                                        .category!
-                                                        .colorValue!),
+                                                  convertList2(
+                                                          listTransactionModel,
+                                                          showIncome)[index]
+                                                      .category!
+                                                      .colorValue!,
+                                                ),
                                                 border: Border(
                                                   top: BorderSide(
                                                     color: Colors.grey,
@@ -467,8 +488,9 @@ class _ReportPageState extends State<ReportPage> {
                                                       Column(
                                                         children: [
                                                           Text(
-                                                            listTransactionModel[
-                                                                    index]
+                                                            convertList2(
+                                                                    listTransactionModel,
+                                                                    showIncome)[index]
                                                                 .category!
                                                                 .name
                                                                 .toString(),
@@ -480,7 +502,8 @@ class _ReportPageState extends State<ReportPage> {
                                                             ),
                                                           ),
                                                           Text(
-                                                            listTransactionModel[
+                                                            convertList2(listTransactionModel,
+                                                                            showIncome)[
                                                                         index]
                                                                     .note ??
                                                                 "",
@@ -496,7 +519,9 @@ class _ReportPageState extends State<ReportPage> {
                                                     ],
                                                   ),
                                                   Text(
-                                                    listTransactionModel[index]
+                                                    convertList2(
+                                                            listTransactionModel,
+                                                            showIncome)[index]
                                                         .amount
                                                         .toString(),
                                                     style: TextStyle(
@@ -633,5 +658,38 @@ class _ReportPageState extends State<ReportPage> {
         element.year == inputDate.year && element.month == inputDate.month);
     index = listCycle.indexOf(cycle);
     return index;
+  }
+
+  List<TransactionDTO> getListIncome(List<TransactionDTO> list) {
+    return list.where((element) => !element.category!.isSpending).toList();
+  }
+
+  List<TransactionDTO> getListSpending(List<TransactionDTO> list) {
+    return list.where((element) => element.category!.isSpending).toList();
+  }
+
+  List<TransactionModel> getListIncome2(List<TransactionModel> list) {
+    return list.where((element) => !element.category!.isSpending).toList();
+  }
+
+  List<TransactionModel> getListSpending2(List<TransactionModel> list) {
+    return list.where((element) => element.category!.isSpending).toList();
+  }
+
+  List<TransactionDTO> convertList(List<TransactionDTO> list, bool showIncome) {
+    return list
+        .where((element) => showIncome
+            ? !element.category!.isSpending
+            : element.category!.isSpending)
+        .toList();
+  }
+
+  List<TransactionModel> convertList2(
+      List<TransactionModel> list, bool showIncome) {
+    return list
+        .where((element) => showIncome
+            ? !element.category!.isSpending
+            : element.category!.isSpending)
+        .toList();
   }
 }
