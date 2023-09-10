@@ -1,4 +1,6 @@
 import 'dart:math';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:happy_money/components/toast.dart';
 import 'package:happy_money/data/hive_service/service/transaction_dto_hive.dart';
 import 'package:happy_money/data/models/transactionn_dto.dart';
 import 'package:happy_money/pages/add_transaction_page/add_page2/amount.dart';
@@ -29,6 +31,7 @@ class AddTransactionPage2 extends StatefulWidget {
 
 class _AddTransactionPage2State extends State<AddTransactionPage2> {
   DateTime currentDate = DateTime.now();
+  bool? validateAmount;
   @override
   void initState() {
     super.initState();
@@ -47,15 +50,41 @@ class _AddTransactionPage2State extends State<AddTransactionPage2> {
       child: Column(
         children: [
           Header(onSave: () {
-            TransactionDTOHive.addTransactionDTO(
-              isMainTransaction: false,
-              amount: widget.transactionDTO.amount ?? 0,
-              category: widget.transactionDTO.category,
-              note: widget.transactionDTO.note ?? "",
-              createdAt: widget.transactionDTO.createdAt ?? DateTime.now(),
-              wallet: widget.transactionDTO.wallet!,
-            );
-            Navigator.pop(context);
+            if (widget.transactionDTO.amount != null &&
+                widget.transactionDTO.amount! > 0 &&
+                widget.transactionDTO.category != null &&
+                widget.transactionDTO.wallet != null) {
+              TransactionDTOHive.addTransactionDTO(
+                isMainTransaction: false,
+                amount: widget.transactionDTO.amount ?? 0,
+                category: widget.transactionDTO.category,
+                note: widget.transactionDTO.note ?? "",
+                createdAt: widget.transactionDTO.createdAt ?? DateTime.now(),
+                wallet: widget.transactionDTO.wallet!,
+              );
+              Navigator.pop(context);
+            } else {
+              String message = "Cannot Add Transaction";
+              if (widget.transactionDTO.amount == null ||
+                  widget.transactionDTO.amount! <= 0)
+                message = "Please Input Amount";
+
+              if (widget.transactionDTO.category == null)
+                message = "Please Select Category";
+
+              if (widget.transactionDTO.wallet == null)
+                message = "Please Select Wallet";
+
+              CustomToast.show(
+                context,
+                message: message,
+                gravity: ToastGravity.TOP,
+                backgroundColor: Colors.red,
+                textStyle: TextStyle(
+                  color: Colors.white,
+                ),
+              );
+            }
           }),
           SizedBox(
             height: 30.h,
@@ -74,13 +103,18 @@ class _AddTransactionPage2State extends State<AddTransactionPage2> {
               ),
               child: Column(
                 children: [
-                  Amount(
-                      transactionDTO: widget.transactionDTO,
-                      setAmount: (value) {
-                        setState(() {
-                          widget.transactionDTO.amount = value;
-                        });
-                      }),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Amount(
+                          transactionDTO: widget.transactionDTO,
+                          setAmount: (value) {
+                            setState(() {
+                              widget.transactionDTO.amount = value;
+                            });
+                          }),
+                    ],
+                  ),
                   SizedBox(
                     height: 20.h,
                   ),

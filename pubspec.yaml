@@ -28,6 +28,7 @@ dependencies:
   intl:
   flutter_switch:
   carousel_slider: ^4.2.1
+  fluttertoast:
 
 dev_dependencies:
   flutter_test:
