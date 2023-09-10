@@ -7,6 +7,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:happy_money/components/pie_chart/custom_chart_values_options.dart';
 import 'package:happy_money/data/models/transactionn_dto.dart';
+import 'package:happy_money/pages/report_page/components/month_year_header.dart';
+import 'package:happy_money/pages/report_page/components/report_header.dart';
+import 'package:happy_money/pages/report_page/components/slider_month.dart';
 import 'package:happy_money/view_models/cycle.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
@@ -65,115 +68,17 @@ class _ReportPageState extends State<ReportPage> {
               padding: EdgeInsets.symmetric(horizontal: 10.w),
               child: Column(
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        width: 120.w,
-                        height: 40.h,
-                        decoration: BoxDecoration(
-                          color: const Color.fromARGB(255, 223, 218, 218),
-                          borderRadius: BorderRadius.circular(10.sp),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            const Icon(
-                              Icons.wallet,
-                              color: Colors.orange,
-                            ),
-                            SizedBox(
-                              width: 5.w,
-                            ),
-                            Text(
-                              "Wallet",
-                              style: TextStyle(
-                                fontSize: 17.0.sp,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 5.w,
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(bottom: 5.h),
-                              child: Transform.rotate(
-                                angle: -90 * pi / 180,
-                                child: Icon(
-                                  Icons.arrow_back_ios,
-                                  size: 13.sp,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Text(
-                        "4.000.000 d",
-                        style: TextStyle(
-                          fontSize: 17.0.sp,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ],
-                  ),
+                  ReportHeader(),
                   SizedBox(
                     height: 10.h,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        width: 40.w,
-                        child: Text(
-                          "",
-                          style: TextStyle(
-                            fontSize: 13.sp,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      ToggleSwitch(
-                        borderWidth: 2.sp,
-                        borderColor: const [
-                          Color.fromARGB(255, 242, 234, 234),
-                        ],
-                        minWidth: 130.w,
-                        minHeight: 35.h,
-                        fontSize: 16.0,
-                        initialLabelIndex: 1,
-                        activeBgColor: [
-                          Colors.green,
-                          Color.fromARGB(255, 88, 219, 32),
-                        ],
-                        activeFgColor: Colors.black,
-                        inactiveBgColor: Colors.white,
-                        inactiveFgColor: Colors.grey[900],
-                        totalSwitches: 2,
-                        labels: ['Month', 'Year'],
-                        onToggle: (index) {
-                          print('switched to: $index');
-                        },
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            currentDate = DateTime.now();
-                          });
-                        },
-                        child: Container(
-                          width: 40.w,
-                          child: Text(
-                            "Today",
-                            style: TextStyle(
-                              fontSize: 13.sp,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                  MonthYearHeader(
+                    currentDate: currentDate,
+                    onChangeDate: (value) {
+                      setState(() {
+                        currentDate = value;
+                      });
+                    },
                   ),
                   const Divider(
                     color: Colors.black,
@@ -204,67 +109,13 @@ class _ReportPageState extends State<ReportPage> {
                         height: 650.h,
                         child: Column(
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Icon(Icons.arrow_back_ios),
-                                GestureDetector(
-                                  onTap: () {
-                                    CustomDatePicker.showMonthYearPicker(
-                                      context,
-                                      showTitleActions: true,
-                                      minTime: DateTime(2022, 1, 1),
-                                      maxTime: DateTime(2023, 12, 30),
-                                      onChanged: (datePick) {},
-                                      onConfirm: (newDate) {
-                                        setState(() {
-                                          currentDate = newDate;
-                                        });
-                                      },
-                                      currentTime: currentDate,
-                                    );
-                                  },
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    width: 300.w,
-                                    height: 40.h,
-                                    decoration: BoxDecoration(
-                                      color: Color.fromARGB(255, 64, 234, 70),
-                                      borderRadius:
-                                          BorderRadius.circular(10.sp),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          DateFormat('MM/yyyy')
-                                              .format(currentDate),
-                                          style: TextStyle(
-                                            fontSize: 20.0.sp,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 9.w,
-                                        ),
-                                        Text(
-                                          "",
-                                          style: TextStyle(
-                                            fontSize: 15.0.sp,
-                                            fontWeight: FontWeight.w300,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Transform.rotate(
-                                  angle: 180 * pi / 180,
-                                  child: const Icon(Icons.arrow_back_ios),
-                                ),
-                              ],
-                            ),
+                            SliderMonth(
+                                currentDate: currentDate,
+                                onChangeDate: (value) {
+                                  setState(() {
+                                    currentDate = value;
+                                  });
+                                }),
                             SizedBox(
                               height: 15.h,
                             ),
