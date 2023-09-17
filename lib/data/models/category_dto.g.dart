@@ -21,13 +21,14 @@ class CategoryDTOAdapter extends TypeAdapter<CategoryDTO> {
       iconPath: fields[11] as String?,
       colorValue: fields[12] as int?,
       isSpending: fields[13] as bool,
+      uniqueKey: fields[14] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, CategoryDTO obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(10)
       ..write(obj.name)
       ..writeByte(11)
@@ -35,7 +36,9 @@ class CategoryDTOAdapter extends TypeAdapter<CategoryDTO> {
       ..writeByte(12)
       ..write(obj.colorValue)
       ..writeByte(13)
-      ..write(obj.isSpending);
+      ..write(obj.isSpending)
+      ..writeByte(14)
+      ..write(obj.uniqueKey);
   }
 
   @override

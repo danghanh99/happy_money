@@ -20,19 +20,22 @@ class WalletDTOAdapter extends TypeAdapter<WalletDTO> {
       name: fields[0] as String,
       iconPath: fields[1] as String?,
       isMainWallet: fields[2] as bool,
+      uniqueKey: fields[3] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, WalletDTO obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
       ..write(obj.iconPath)
       ..writeByte(2)
-      ..write(obj.isMainWallet);
+      ..write(obj.isMainWallet)
+      ..writeByte(3)
+      ..write(obj.uniqueKey);
   }
 
   @override

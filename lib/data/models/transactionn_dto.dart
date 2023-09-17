@@ -11,6 +11,7 @@ class TransactionDTO {
     this.note,
     this.createdAt,
     this.wallet,
+    required this.uniqueKey,
   });
 
   @HiveField(20)
@@ -28,12 +29,10 @@ class TransactionDTO {
   @HiveField(24)
   late WalletDTO? wallet;
 
+  @HiveField(25)
+  late String uniqueKey;
+
   @override
-  List<Object?> get props => [
-        amount,
-        category,
-        note,
-        createdAt,
-        wallet,
-      ];
+  List<Object?> get props =>
+      [amount, category, note, createdAt, wallet, uniqueKey];
 }

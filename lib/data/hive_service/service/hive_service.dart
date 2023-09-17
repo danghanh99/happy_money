@@ -5,6 +5,7 @@ import 'package:happy_money/data/models/category_dto.dart';
 import 'package:happy_money/data/models/transactionn_dto.dart';
 import 'package:happy_money/data/models/wallet_dto.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:uuid/uuid.dart';
 
 import '../data_source/wallet_data_source.dart';
 
@@ -19,6 +20,16 @@ class HiveService {
     await Hive.openBox<WalletDTO>('WalletDTOBox');
     await Hive.openBox<CategoryDTO>('CategoryDTOBox');
     await Hive.openBox<TransactionDTO>('TransactionDTOBox');
+  }
+
+  String generateUniquekey(Box box) {
+    String uniqueKey = "";
+    uniqueKey = Uuid().v4();
+    while (
+        box.values.toList().any((element) => element.uniqueKey == uniqueKey)) {
+      uniqueKey = Uuid().v4();
+    }
+    return uniqueKey;
   }
 
   void seedHive() {

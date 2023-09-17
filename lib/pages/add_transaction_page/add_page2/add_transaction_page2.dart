@@ -30,11 +30,12 @@ class AddTransactionPage2 extends StatefulWidget {
 }
 
 class _AddTransactionPage2State extends State<AddTransactionPage2> {
-  DateTime currentDate = DateTime.now();
+  late DateTime currentDate;
   bool? validateAmount;
   @override
   void initState() {
     super.initState();
+    currentDate = widget.transactionDTO.createdAt ?? DateTime.now();
   }
 
   @override
@@ -54,14 +55,10 @@ class _AddTransactionPage2State extends State<AddTransactionPage2> {
                 widget.transactionDTO.amount! > 0 &&
                 widget.transactionDTO.category != null &&
                 widget.transactionDTO.wallet != null) {
-              TransactionDTOHive.addTransactionDTO(
-                isMainTransaction: false,
-                amount: widget.transactionDTO.amount ?? 0,
-                category: widget.transactionDTO.category,
-                note: widget.transactionDTO.note ?? "",
-                createdAt: widget.transactionDTO.createdAt ?? DateTime.now(),
-                wallet: widget.transactionDTO.wallet!,
-              );
+              widget.transactionDTO;
+              TransactionDTOHive.findToCreateOrUpdateTransactionDTO(
+                  widget.transactionDTO);
+
               Navigator.pop(context);
             } else {
               String message = "Cannot Add Transaction";

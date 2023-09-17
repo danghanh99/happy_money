@@ -1,25 +1,23 @@
-import 'dart:math';
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:happy_money/components/pie_chart/custom_chart_values_options.dart';
+import 'package:happy_money/data/hive_service/service/transaction_dto_hive.dart';
 import 'package:happy_money/data/models/transactionn_dto.dart';
 import 'package:happy_money/pages/report_page/components/month_year_header.dart';
 import 'package:happy_money/pages/report_page/components/report_header.dart';
 import 'package:happy_money/pages/report_page/components/slider_month.dart';
 import 'package:happy_money/view_models/cycle.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:intl/intl.dart';
-import 'package:toggle_switch/toggle_switch.dart';
-
 import '../../components/pie_chart/custom_legend_options.dart';
 import '../../components/pie_chart/custom_pie_chart.dart';
-import '../../custom/custom_flutter_datetime_picker_plus.dart';
+import '../../data/hive_service/data_source/wallet_data_source.dart';
+import '../../data/models/wallet_dto.dart';
 import '../../view_models/transaction_model.dart';
+import '../add_transaction_page/add_transaction_page.dart';
 import 'components/toggle_line.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class ReportPage extends StatefulWidget {
   const ReportPage({
@@ -38,9 +36,11 @@ class _ReportPageState extends State<ReportPage> {
   int currentCycleIndex = 0;
   DateTime currentDate = DateTime.now();
   bool showIncome = true;
+  List<WalletDTO> listWallet = [];
 
   @override
   void initState() {
+    listWallet = WalletDataSource.getListWalletDTO();
     super.initState();
   }
 
@@ -299,89 +299,119 @@ class _ReportPageState extends State<ReportPage> {
                                                   showIncome)
                                               .length,
                                           itemBuilder: (context, index) {
-                                            return Container(
-                                              decoration: BoxDecoration(
-                                                color: Color(
-                                                  convertList2(
-                                                          listTransactionModel,
-                                                          showIncome)[index]
-                                                      .category!
-                                                      .colorValue!,
-                                                ),
-                                                border: Border(
-                                                  top: BorderSide(
-                                                    color: Colors.grey,
-                                                    width: 0.5.sp,
-                                                  ),
-                                                  bottom: BorderSide(
-                                                    color: Colors.grey,
-                                                    width: 0.5.sp,
-                                                  ),
-                                                ),
-                                              ),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Row(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Icon(
-                                                        Icons.home,
-                                                        size: 50.sp,
-                                                      ),
-                                                      SizedBox(
-                                                        width: 5.w,
-                                                      ),
-                                                      Column(
-                                                        children: [
-                                                          Text(
-                                                            convertList2(
-                                                                    listTransactionModel,
-                                                                    showIncome)[index]
-                                                                .category!
-                                                                .name
-                                                                .toString(),
-                                                            style: TextStyle(
-                                                              fontSize: 25.sp,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400,
-                                                            ),
-                                                          ),
-                                                          Text(
-                                                            convertList2(listTransactionModel,
-                                                                            showIncome)[
-                                                                        index]
-                                                                    .note ??
-                                                                "",
-                                                            style: TextStyle(
-                                                              fontSize: 20.sp,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w300,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  Text(
+                                            String uniqueKey = convertList2(
+                                                        listTransactionModel,
+                                                        showIncome)[index]
+                                                    .uniqueKey ??
+                                                "";
+                                            return GestureDetector(
+                                              onTap: () {
+                                                showMaterialModalBottomSheet(
+                                                    shape: RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.only(
+                                                                topLeft: Radius
+                                                                    .circular(
+                                                                        16.0
+                                                                            .sp),
+                                                                topRight: Radius
+                                                                    .circular(16.0
+                                                                        .sp))),
+                                                    context: context,
+                                                    builder: (context) =>
+                                                        AddTransactionPage(
+                                                          listWalletDTO:
+                                                              listWallet,
+                                                          editTransaction:
+                                                              TransactionDTOHive
+                                                                  .findTransactionDTO(
+                                                                      uniqueKey),
+                                                        ));
+                                              },
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  color: Color(
                                                     convertList2(
                                                             listTransactionModel,
                                                             showIncome)[index]
-                                                        .amount
-                                                        .toString(),
-                                                    style: TextStyle(
-                                                      fontSize: 20.sp,
-                                                      fontWeight:
-                                                          FontWeight.w300,
+                                                        .category!
+                                                        .colorValue!,
+                                                  ),
+                                                  border: Border(
+                                                    top: BorderSide(
+                                                      color: Colors.grey,
+                                                      width: 0.5.sp,
+                                                    ),
+                                                    bottom: BorderSide(
+                                                      color: Colors.grey,
+                                                      width: 0.5.sp,
                                                     ),
                                                   ),
-                                                ],
+                                                ),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Row(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Icon(
+                                                          Icons.home,
+                                                          size: 50.sp,
+                                                        ),
+                                                        SizedBox(
+                                                          width: 5.w,
+                                                        ),
+                                                        Column(
+                                                          children: [
+                                                            Text(
+                                                              convertList2(
+                                                                      listTransactionModel,
+                                                                      showIncome)[index]
+                                                                  .category!
+                                                                  .name
+                                                                  .toString(),
+                                                              style: TextStyle(
+                                                                fontSize: 25.sp,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400,
+                                                              ),
+                                                            ),
+                                                            Text(
+                                                              convertList2(listTransactionModel,
+                                                                              showIncome)[
+                                                                          index]
+                                                                      .note ??
+                                                                  "",
+                                                              style: TextStyle(
+                                                                fontSize: 20.sp,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w300,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    Text(
+                                                      convertList2(
+                                                              listTransactionModel,
+                                                              showIncome)[index]
+                                                          .amount
+                                                          .toString(),
+                                                      style: TextStyle(
+                                                        fontSize: 20.sp,
+                                                        fontWeight:
+                                                            FontWeight.w300,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
                                             );
                                           },

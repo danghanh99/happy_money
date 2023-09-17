@@ -22,13 +22,14 @@ class TransactionDTOAdapter extends TypeAdapter<TransactionDTO> {
       note: fields[22] as String?,
       createdAt: fields[23] as DateTime?,
       wallet: fields[24] as WalletDTO?,
+      uniqueKey: fields[25] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, TransactionDTO obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(20)
       ..write(obj.amount)
       ..writeByte(21)
@@ -38,7 +39,9 @@ class TransactionDTOAdapter extends TypeAdapter<TransactionDTO> {
       ..writeByte(23)
       ..write(obj.createdAt)
       ..writeByte(24)
-      ..write(obj.wallet);
+      ..write(obj.wallet)
+      ..writeByte(25)
+      ..write(obj.uniqueKey);
   }
 
   @override

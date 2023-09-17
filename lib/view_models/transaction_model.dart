@@ -13,6 +13,7 @@ class TransactionModel {
   DateTime? createdAt;
 
   WalletDTO? wallet;
+  String? uniqueKey;
 
   TransactionModel({
     this.amount,
@@ -20,6 +21,7 @@ class TransactionModel {
     this.note,
     this.createdAt,
     this.wallet,
+    this.uniqueKey,
   });
 
   TransactionModel convertToTransactionModel(TransactionDTO trans) {
@@ -29,6 +31,7 @@ class TransactionModel {
     newTra.note = trans.note;
     newTra.createdAt = trans.createdAt;
     newTra.wallet = trans.wallet;
+    newTra.uniqueKey = trans.uniqueKey;
     return newTra;
   }
 }

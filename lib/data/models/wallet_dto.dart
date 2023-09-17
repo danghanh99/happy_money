@@ -8,6 +8,7 @@ class WalletDTO {
     required this.name,
     this.iconPath,
     required this.isMainWallet,
+    required this.uniqueKey,
   });
 
   @HiveField(00)
@@ -22,16 +23,17 @@ class WalletDTO {
   @JsonKey(name: 'isMainWallet', required: true)
   late bool isMainWallet;
 
+  @HiveField(03)
+  @JsonKey(name: 'uniqueKey', required: true)
+  late String uniqueKey;
+
   factory WalletDTO.fromJson(Map<String, dynamic> json) => WalletDTO(
         name: json['name'],
         iconPath: json['iconPath'],
         isMainWallet: json['isMainWallet'],
+        uniqueKey: json['uniqueKey'],
       );
 
   @override
-  List<Object?> get props => [
-        name,
-        iconPath,
-        isMainWallet,
-      ];
+  List<Object?> get props => [name, iconPath, isMainWallet, uniqueKey];
 }

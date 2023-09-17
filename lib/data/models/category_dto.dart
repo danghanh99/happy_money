@@ -9,6 +9,7 @@ class CategoryDTO {
     this.iconPath,
     required this.colorValue,
     required this.isSpending,
+    required this.uniqueKey,
   });
 
   @HiveField(10)
@@ -27,11 +28,16 @@ class CategoryDTO {
   @JsonKey(name: 'isSpending', required: true)
   late bool isSpending;
 
+  @HiveField(14)
+  @JsonKey(name: 'uniqueKey', required: true)
+  late String uniqueKey;
+
   factory CategoryDTO.fromJson(Map<String, dynamic> json) => CategoryDTO(
         name: json['name'],
         iconPath: json['iconPath'],
         colorValue: json['colorValue'],
         isSpending: json['isSpending'],
+        uniqueKey: json['uniqueKey'],
       );
 
   @override
@@ -40,5 +46,6 @@ class CategoryDTO {
         iconPath,
         colorValue,
         isSpending,
+        uniqueKey,
       ];
 }

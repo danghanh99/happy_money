@@ -29,6 +29,7 @@ dependencies:
   flutter_switch:
   carousel_slider: ^4.2.1
   fluttertoast:
+  uuid: ^4.0.0
 
 dev_dependencies:
   flutter_test:
