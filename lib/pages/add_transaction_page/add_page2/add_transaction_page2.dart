@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:happy_money/components/toast.dart';
+import 'package:happy_money/data/hive_service/data_source/transaction_data_source.dart';
 import 'package:happy_money/data/hive_service/service/transaction_dto_hive.dart';
 import 'package:happy_money/data/models/transactionn_dto.dart';
 import 'package:happy_money/pages/add_transaction_page/add_page2/amount.dart';
@@ -19,23 +20,29 @@ class AddTransactionPage2 extends StatefulWidget {
     required this.goToCategory,
     required this.transactionDTO,
     required this.goToWallet,
+    required this.isEdit,
   });
 
   final Widget? child;
   final Function goToCategory;
   final Function goToWallet;
   final TransactionDTO transactionDTO;
+  final bool isEdit;
   @override
   State<AddTransactionPage2> createState() => _AddTransactionPage2State();
 }
 
 class _AddTransactionPage2State extends State<AddTransactionPage2> {
-  late DateTime currentDate;
+  late DateTime currentDate = DateTime.now();
   bool? validateAmount;
   @override
   void initState() {
     super.initState();
-    currentDate = widget.transactionDTO.createdAt ?? DateTime.now();
+    if (widget.transactionDTO.createdAt == null) {
+      widget.transactionDTO.createdAt = currentDate;
+    } else {
+      currentDate = widget.transactionDTO.createdAt!;
+    }
   }
 
   @override
@@ -54,7 +61,8 @@ class _AddTransactionPage2State extends State<AddTransactionPage2> {
             if (widget.transactionDTO.amount != null &&
                 widget.transactionDTO.amount! > 0 &&
                 widget.transactionDTO.category != null &&
-                widget.transactionDTO.wallet != null) {
+                widget.transactionDTO.wallet != null &&
+                widget.transactionDTO.createdAt != null) {
               widget.transactionDTO;
               TransactionDTOHive.findToCreateOrUpdateTransactionDTO(
                   widget.transactionDTO);
@@ -208,6 +216,55 @@ class _AddTransactionPage2State extends State<AddTransactionPage2> {
               ),
             ),
           ),
+          Spacer(),
+          widget.isEdit
+              ? GestureDetector(
+                  onTap: () {
+                    if (TransactionDataSource.deleteTransactionDTO(
+                        widget.transactionDTO.uniqueKey)) {
+                      Navigator.pop(context);
+                      CustomToast.show(
+                        context,
+                        message: "Deleted Transaction",
+                        gravity: ToastGravity.TOP,
+                        backgroundColor: Colors.green,
+                        textStyle: TextStyle(
+                          color: Colors.white,
+                        ),
+                      );
+                    } else {
+                      CustomToast.show(
+                        context,
+                        message: "Delete Transaction Failed",
+                        gravity: ToastGravity.TOP,
+                        backgroundColor: Colors.red,
+                        textStyle: TextStyle(
+                          color: Colors.white,
+                        ),
+                      );
+                    }
+                  },
+                  child: Container(
+                    alignment: Alignment.center,
+                    width: 350.w,
+                    height: 50.h,
+                    child: Text(
+                      "Delete",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20.sp,
+                      ),
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(15.sp)),
+                      color: Colors.red,
+                    ),
+                  ),
+                )
+              : Container(),
+          SizedBox(
+            height: 40.h,
+          )
         ],
       ),
     );

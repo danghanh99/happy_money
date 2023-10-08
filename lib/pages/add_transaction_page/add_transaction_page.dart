@@ -11,10 +11,12 @@ class AddTransactionPage extends StatefulWidget {
     super.key,
     required this.listWalletDTO,
     this.editTransaction,
+    required this.isEdit,
   });
 
   final List<WalletDTO> listWalletDTO;
   final TransactionDTO? editTransaction;
+  final bool isEdit;
 
   @override
   _AddTransactionPageState createState() => _AddTransactionPageState();
@@ -36,6 +38,7 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
     }
     pages = [
       AddTransactionPage2(
+        isEdit: widget.isEdit,
         transactionDTO: transactionDTO,
         goToCategory: () {
           setState(() {

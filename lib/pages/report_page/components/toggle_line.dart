@@ -5,9 +5,11 @@ class ToggleLine extends StatefulWidget {
   const ToggleLine({
     super.key,
     required this.changeToggle,
+    required this.showIncome,
   });
 
   final Function() changeToggle;
+  final bool showIncome;
   @override
   State<ToggleLine> createState() => _ToggleLineState();
 }
@@ -16,7 +18,7 @@ class _ToggleLineState extends State<ToggleLine> {
   late bool isIncome;
   @override
   initState() {
-    isIncome = true;
+    isIncome = widget.showIncome;
     super.initState();
   }
 
@@ -25,40 +27,6 @@ class _ToggleLineState extends State<ToggleLine> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        GestureDetector(
-          onTap: () {
-            if (!isIncome) {
-              setState(() {
-                isIncome = true;
-              });
-              widget.changeToggle.call();
-            }
-          },
-          child: Container(
-            alignment: Alignment.center,
-            width: 195.w,
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  color: isIncome
-                      ? Colors.green
-                      : const Color.fromARGB(255, 75, 71, 71),
-                  width: 2.0.sp,
-                ),
-              ),
-            ),
-            child: Text(
-              "Income",
-              style: TextStyle(
-                color: isIncome
-                    ? Colors.green
-                    : const Color.fromARGB(255, 75, 71, 71),
-                fontSize: 20.sp,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
-        ),
         GestureDetector(
           onTap: () {
             if (isIncome) {
@@ -85,6 +53,40 @@ class _ToggleLineState extends State<ToggleLine> {
               "Spending",
               style: TextStyle(
                 color: !isIncome
+                    ? Colors.green
+                    : const Color.fromARGB(255, 75, 71, 71),
+                fontSize: 20.sp,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        ),
+        GestureDetector(
+          onTap: () {
+            if (!isIncome) {
+              setState(() {
+                isIncome = true;
+              });
+              widget.changeToggle.call();
+            }
+          },
+          child: Container(
+            alignment: Alignment.center,
+            width: 195.w,
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: isIncome
+                      ? Colors.green
+                      : const Color.fromARGB(255, 75, 71, 71),
+                  width: 2.0.sp,
+                ),
+              ),
+            ),
+            child: Text(
+              "Income",
+              style: TextStyle(
+                color: isIncome
                     ? Colors.green
                     : const Color.fromARGB(255, 75, 71, 71),
                 fontSize: 20.sp,

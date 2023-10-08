@@ -35,7 +35,7 @@ class _ReportPageState extends State<ReportPage> {
   List<Cycle> listCycle = [];
   int currentCycleIndex = 0;
   DateTime currentDate = DateTime.now();
-  bool showIncome = true;
+  bool showIncome = false;
   List<WalletDTO> listWallet = [];
 
   @override
@@ -214,6 +214,7 @@ class _ReportPageState extends State<ReportPage> {
                                           height: 20.h,
                                         ),
                                         ToggleLine(
+                                          showIncome: showIncome,
                                           changeToggle: () {
                                             setState(() {
                                               showIncome = !showIncome;
@@ -320,6 +321,7 @@ class _ReportPageState extends State<ReportPage> {
                                                     context: context,
                                                     builder: (context) =>
                                                         AddTransactionPage(
+                                                          isEdit: true,
                                                           listWalletDTO:
                                                               listWallet,
                                                           editTransaction:

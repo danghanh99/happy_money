@@ -46,7 +46,7 @@ class _CategoryItemState extends State<CategoryItem> {
               width: 5.w,
             ),
             Container(
-              width: width - 60,
+              width: width - 70,
               decoration: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(

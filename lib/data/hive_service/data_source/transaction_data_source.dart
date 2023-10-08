@@ -12,4 +12,17 @@ class TransactionDataSource {
       return listTransactionDTO;
     }
   }
+
+  static bool deleteTransactionDTO(String uniqueKey) {
+    try {
+      final box = Boxes.getBoxTransactionDTO();
+      int index = box.values
+          .toList()
+          .indexWhere((element) => element.uniqueKey == uniqueKey);
+      box.deleteAt(index);
+      return true;
+    } on Exception catch (err) {
+      return false;
+    }
+  }
 }

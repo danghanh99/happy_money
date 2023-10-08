@@ -1,8 +1,6 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
+import 'package:happy_money/pages/setting_page/category_page.dart';
 
 class SettingPage extends StatefulWidget {
   const SettingPage({
@@ -20,6 +18,10 @@ class _SettingPageState extends State<SettingPage> {
   TextEditingController textEditingController = new TextEditingController();
   TextEditingController groupController = new TextEditingController();
   DateTime currentDate = DateTime.now();
+  late List<Widget> pages;
+
+  int currentview = 0;
+
   @override
   void initState() {
     super.initState();
@@ -66,22 +68,41 @@ class _SettingPageState extends State<SettingPage> {
           SizedBox(
             height: 10.h,
           ),
-          Padding(
-            padding: EdgeInsets.only(
-              left: 10.w,
-              right: 10.w,
-            ),
-            child: Column(
-              children: [
-                Text(
-                  "Comming soon",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 17.sp,
-                    fontWeight: FontWeight.w400,
-                  ),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CategoryPage(),
                 ),
-              ],
+              );
+            },
+            child: Container(
+              height: 60.h,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(),
+                color: Colors.white,
+              ),
+              child: Padding(
+                padding: EdgeInsets.only(
+                  top: 10.h,
+                  bottom: 10.h,
+                  right: 15.h,
+                  left: 15.h,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Category",
+                      style: TextStyle(
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
         ],

@@ -85,6 +85,7 @@ class _HomePageState extends State<HomePage> {
                       context: context,
                       builder: (context) => AddTransactionPage(
                             listWalletDTO: listWallet,
+                            isEdit: false,
                           ));
                 },
                 items: const [

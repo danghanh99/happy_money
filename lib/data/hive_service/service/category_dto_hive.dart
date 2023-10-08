@@ -1,6 +1,5 @@
 import 'dart:ui';
 import 'package:happy_money/data/hive_service/service/hive_service.dart';
-import 'package:uuid/uuid.dart';
 
 import '../../models/category_dto.dart';
 import '../boxes.dart';

@@ -39,10 +39,10 @@ class HiveService {
         isMainWallet: true,
       );
 
-      WalletDTOHive.addWalletDTO(
-        name: 'Mizuho',
-        isMainWallet: false,
-      );
+      // WalletDTOHive.addWalletDTO(
+      //   name: 'Mizuho',
+      //   isMainWallet: false,
+      // );
 
       //Spending
       CategoryDTOHive.addCategoryDTO(
