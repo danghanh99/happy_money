@@ -2,6 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:happy_money/components/format_money.dart';
+import 'package:intl/intl.dart';
 
 class ReportHeader extends StatefulWidget {
   const ReportHeader({
@@ -67,7 +69,7 @@ class _ReportHeaderState extends State<ReportHeader> {
           ),
         ),
         Text(
-          widget.total.toString() + " VND",
+          FormatMoney.formatTo(widget.total, "VND"),
           style: TextStyle(
             fontSize: 17.0.sp,
             fontWeight: FontWeight.w500,

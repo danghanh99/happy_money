@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_switch/flutter_switch.dart';
+import 'package:happy_money/components/format_money.dart';
 import 'package:happy_money/components/pie_chart/custom_chart_values_options.dart';
 import 'package:happy_money/data/hive_service/service/transaction_dto_hive.dart';
 import 'package:happy_money/data/models/transactionn_dto.dart';
@@ -145,7 +146,9 @@ class _ReportPageState extends State<ReportPage> {
                                                   ),
                                                 ),
                                                 Text(
-                                                  "+" + inComeMoney.toString(),
+                                                  "+" +
+                                                      FormatMoney.formatTo(
+                                                          inComeMoney, null),
                                                   style: TextStyle(
                                                     fontSize: 20.sp,
                                                     fontWeight: FontWeight.w300,
@@ -167,7 +170,8 @@ class _ReportPageState extends State<ReportPage> {
                                                 ),
                                                 Text(
                                                   "-" +
-                                                      spendingMoney.toString(),
+                                                      FormatMoney.formatTo(
+                                                          spendingMoney, null),
                                                   style: TextStyle(
                                                     fontSize: 20.sp,
                                                     fontWeight: FontWeight.w300,
@@ -201,7 +205,10 @@ class _ReportPageState extends State<ReportPage> {
                                                   ),
                                                 ),
                                                 Text(
-                                                  (inComeMoney - spendingMoney)
+                                                  (FormatMoney.formatTo(
+                                                          inComeMoney -
+                                                              spendingMoney,
+                                                          null))
                                                       .toString(),
                                                   style: TextStyle(
                                                     fontSize: 20.sp,
