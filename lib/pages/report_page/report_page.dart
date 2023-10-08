@@ -68,7 +68,9 @@ class _ReportPageState extends State<ReportPage> {
               padding: EdgeInsets.symmetric(horizontal: 10.w),
               child: Column(
                 children: [
-                  ReportHeader(),
+                  ReportHeader(
+                    total: inComeMoney - spendingMoney,
+                  ),
                   SizedBox(
                     height: 10.h,
                   ),

@@ -125,6 +125,7 @@ class _ListCategoryPageState extends State<ListCategoryPage> {
               itemCount: listCategorySpending.length,
               itemBuilder: (context, index) {
                 return CategoryItem(
+                  colorValue: listCategorySpending[index].colorValue,
                   name: listCategorySpending[index].name,
                   iconPath: listCategorySpending[index].iconPath,
                   checked: selectedCategoryIndexSpending == index,
@@ -160,6 +161,7 @@ class _ListCategoryPageState extends State<ListCategoryPage> {
               itemCount: listCategoryIncome.length,
               itemBuilder: (context, index) {
                 return CategoryItem(
+                  colorValue: listCategoryIncome[index].colorValue,
                   name: listCategoryIncome[index].name,
                   iconPath: listCategoryIncome[index].iconPath,
                   checked: selectedCategoryIndexIncome == index,

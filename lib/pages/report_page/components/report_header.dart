@@ -6,8 +6,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class ReportHeader extends StatefulWidget {
   const ReportHeader({
     super.key,
+    required this.total,
   });
 
+  final int total;
   @override
   State<ReportHeader> createState() => _ReportHeaderState();
 }
@@ -65,7 +67,7 @@ class _ReportHeaderState extends State<ReportHeader> {
           ),
         ),
         Text(
-          "4.000.000 d",
+          widget.total.toString() + " VND",
           style: TextStyle(
             fontSize: 17.0.sp,
             fontWeight: FontWeight.w500,

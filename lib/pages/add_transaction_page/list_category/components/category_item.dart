@@ -8,12 +8,14 @@ class CategoryItem extends StatefulWidget {
     this.iconPath,
     required this.onTap,
     required this.checked,
+    this.colorValue,
   });
 
   final String name;
   final String? iconPath;
   final Function() onTap;
   final bool checked;
+  final int? colorValue;
 
   @override
   State<CategoryItem> createState() => _CategoryItemState();
@@ -38,9 +40,14 @@ class _CategoryItemState extends State<CategoryItem> {
         color: Colors.white,
         child: Row(
           children: [
-            Icon(
-              Icons.home,
-              size: 50.sp,
+            Container(
+              color: widget.colorValue == null
+                  ? Colors.white
+                  : Color(widget.colorValue!),
+              child: Icon(
+                Icons.home,
+                size: 50.sp,
+              ),
             ),
             SizedBox(
               width: 5.w,
