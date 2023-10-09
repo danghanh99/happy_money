@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
+import '../../components/toast.dart';
+import '../../data/hive_service/data_source/category_data_source.dart';
 
 class AddCategoryPage extends StatefulWidget {
   const AddCategoryPage({
@@ -13,6 +18,7 @@ class AddCategoryPage extends StatefulWidget {
 class _AddCategoryPageState extends State<AddCategoryPage> {
   TextEditingController textEditingController = new TextEditingController();
   int _groupValue = -1;
+  Color currentColor = Colors.white;
   @override
   void initState() {
     _groupValue = 0;
@@ -70,7 +76,47 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      if (textEditingController.value.text != "" ||
+                          textEditingController.value.text.toString().length >
+                              0) {
+                        if (CategoryDataSource.addCategoryDTO(
+                            textEditingController.value.text,
+                            currentColor,
+                            _groupValue == 0)) {
+                          Navigator.pop(context);
+                          CustomToast.show(
+                            context,
+                            message: "Added Category",
+                            gravity: ToastGravity.TOP,
+                            backgroundColor: Colors.green,
+                            textStyle: TextStyle(
+                              color: Colors.white,
+                            ),
+                          );
+                        } else {
+                          CustomToast.show(
+                            context,
+                            message: "Add Category Failed",
+                            gravity: ToastGravity.TOP,
+                            backgroundColor: Colors.red,
+                            textStyle: TextStyle(
+                              color: Colors.white,
+                            ),
+                          );
+                        }
+                      } else {
+                        CustomToast.show(
+                          context,
+                          message: "Add Category Failed",
+                          gravity: ToastGravity.TOP,
+                          backgroundColor: Colors.red,
+                          textStyle: TextStyle(
+                            color: Colors.white,
+                          ),
+                        );
+                      }
+                    },
                     child: Text(
                       "Save",
                       style: TextStyle(
@@ -137,7 +183,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                           value: 0,
                           groupValue: _groupValue,
                           title: Text(
-                            "Sending",
+                            "Spending",
                             style: TextStyle(
                               fontSize: 22.sp,
                             ),
@@ -165,6 +211,21 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                     ),
                   ),
                 ),
+                SizedBox(
+                  height: 20.h,
+                ),
+                ColorPicker(
+                    pickerAreaHeightPercent: 0.4,
+                    colorPickerWidth: 300.w,
+                    portraitOnly: true,
+                    enableAlpha: false,
+                    labelTypes: [],
+                    pickerColor: currentColor,
+                    onColorChanged: (color) {
+                      setState(() {
+                        currentColor = color;
+                      });
+                    }),
               ],
             ),
           ),
