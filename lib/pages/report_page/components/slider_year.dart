@@ -6,22 +6,22 @@ import 'package:intl/intl.dart';
 
 import '../../../custom/custom_flutter_datetime_picker_plus.dart';
 
-class SliderMonth extends StatefulWidget {
-  SliderMonth({
+class SliderYear extends StatefulWidget {
+  SliderYear({
     super.key,
     required this.currentDate,
     required this.onChangeDate,
-    required this.isHidenMonth,
+    required this.isHindenMonth,
   });
 
   DateTime currentDate;
   Function(DateTime) onChangeDate;
-  bool isHidenMonth;
+  bool isHindenMonth;
   @override
-  State<SliderMonth> createState() => _SliderMonthState();
+  State<SliderYear> createState() => _SliderYearState();
 }
 
-class _SliderMonthState extends State<SliderMonth> {
+class _SliderYearState extends State<SliderYear> {
   @override
   initState() {
     super.initState();
@@ -40,7 +40,7 @@ class _SliderMonthState extends State<SliderMonth> {
               showTitleActions: true,
               minTime: DateTime(2022, 1, 1),
               maxTime: DateTime(2023, 12, 30),
-              isHidenMonth: widget.isHidenMonth,
+              isHidenMonth: widget.isHindenMonth,
               onChanged: (datePick) {},
               onConfirm: (newDate) {
                 // setState(() {
@@ -63,8 +63,7 @@ class _SliderMonthState extends State<SliderMonth> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  DateFormat(widget.isHidenMonth ? 'yyyy' : 'MM/yyyy')
-                      .format(widget.currentDate),
+                  DateFormat('yyyy').format(widget.currentDate),
                   style: TextStyle(
                     fontSize: 20.0.sp,
                     fontWeight: FontWeight.w500,

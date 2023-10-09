@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:happy_money/components/custom_bottom_bar_with_sheet.dart';
+import 'package:happy_money/custom/custom_bottom_bar_with_sheet.dart';
 import 'package:happy_money/pages/report_page/report_page.dart';
 import 'package:happy_money/pages/overview_page/overview_page.dart';
 import 'package:happy_money/pages/budget_page/budget_page.dart';

@@ -38,6 +38,7 @@ class _ReportPageState extends State<ReportPage> {
   DateTime currentDate = DateTime.now();
   bool showIncome = false;
   List<WalletDTO> listWallet = [];
+  bool isFilterByYear = false;
 
   @override
   void initState() {
@@ -55,8 +56,10 @@ class _ReportPageState extends State<ReportPage> {
 
           int total = countTotal(listTransaction);
 
-          listCycle = setListCycle(listTransaction);
-          int currentIndex = getCycleIndex(listCycle, currentDate);
+          listCycle = setListCycle(listTransaction, isFilterByYear);
+
+          int currentIndex =
+              getCycleIndex(listCycle, currentDate, isFilterByYear);
           int inComeMoney =
               getIncome(listCycle[currentIndex].listTransactionDTO);
           int spendingMoney =
@@ -76,6 +79,12 @@ class _ReportPageState extends State<ReportPage> {
                     height: 10.h,
                   ),
                   MonthYearHeader(
+                    isFilterByYear: isFilterByYear,
+                    onChangeMonthYear: (value) {
+                      setState(() {
+                        isFilterByYear = value == "Year";
+                      });
+                    },
                     currentDate: currentDate,
                     onChangeDate: (value) {
                       setState(() {
@@ -113,6 +122,7 @@ class _ReportPageState extends State<ReportPage> {
                         child: Column(
                           children: [
                             SliderMonth(
+                                isHidenMonth: isFilterByYear,
                                 currentDate: currentDate,
                                 onChangeDate: (value) {
                                   setState(() {
@@ -522,12 +532,15 @@ class _ReportPageState extends State<ReportPage> {
     return spending;
   }
 
-  List<Cycle> setListCycle(List<TransactionDTO> listTransactionDTO) {
+  List<Cycle> setListCycle(
+      List<TransactionDTO> listTransactionDTO, bool isFilterByYear) {
     List<Cycle> listCycle = [];
     listYear.forEach((year) {
-      listMonth.forEach((month) {
-        DateTime from = DateTime(year, month, 1);
-        DateTime to = new DateTime(from.year, from.month + 1, 0);
+      if (isFilterByYear) {
+        //filter by year
+        DateTime from = DateTime(year, 1, 1);
+        DateTime to = DateTime(from.year, 12, 31);
+
         List<TransactionDTO> list = listTransactionDTO
             .where((element) =>
                 element.createdAt!.isAfter(from) &&
@@ -535,23 +548,45 @@ class _ReportPageState extends State<ReportPage> {
                 element.createdAt!.isAtSameMomentAs(from) ||
                 element.createdAt!.isAtSameMomentAs(to))
             .toList();
+
         Cycle cycle = new Cycle(
-            year: year,
-            month: month,
-            from: from,
-            to: to,
-            listTransactionDTO: list);
+            year: year, month: 1, from: from, to: to, listTransactionDTO: list);
         listCycle.add(cycle);
-      });
+      } else {
+        //filter by month
+        listMonth.forEach((month) {
+          DateTime from = DateTime(year, month, 1);
+          DateTime to = new DateTime(from.year, from.month + 1, 0);
+          List<TransactionDTO> list = listTransactionDTO
+              .where((element) =>
+                  element.createdAt!.isAfter(from) &&
+                      element.createdAt!.isBefore(to) ||
+                  element.createdAt!.isAtSameMomentAs(from) ||
+                  element.createdAt!.isAtSameMomentAs(to))
+              .toList();
+          Cycle cycle = new Cycle(
+              year: year,
+              month: month,
+              from: from,
+              to: to,
+              listTransactionDTO: list);
+          listCycle.add(cycle);
+        });
+      }
     });
     return listCycle;
   }
 
-  int getCycleIndex(List<Cycle> listCycle, DateTime inputDate) {
+  int getCycleIndex(
+      List<Cycle> listCycle, DateTime inputDate, bool isFilterByYear) {
     int index = 0;
-    Cycle cycle = listCycle.firstWhere((element) =>
-        element.year == inputDate.year && element.month == inputDate.month);
-    index = listCycle.indexOf(cycle);
+    if (isFilterByYear) {
+      index = listCycle.indexWhere((element) => element.year == inputDate.year);
+    } else {
+      Cycle cycle = listCycle.firstWhere((element) =>
+          element.year == inputDate.year && element.month == inputDate.month);
+      index = listCycle.indexOf(cycle);
+    }
     return index;
   }
 

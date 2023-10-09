@@ -30,10 +30,12 @@ class CustomDatePicker {
     locale = LocaleType.en,
     DateTime? currentTime,
     picker_theme.DatePickerTheme? theme,
+    required bool isHidenMonth,
   }) async {
     return await Navigator.push(
       context,
       _DatePickerRoute(
+        isHidenMonth: isHidenMonth,
         showTitleActions: showTitleActions,
         onChanged: onChanged,
         onConfirm: onConfirm,
@@ -65,10 +67,12 @@ class CustomDatePicker {
     locale = LocaleType.en,
     DateTime? currentTime,
     picker_theme.DatePickerTheme? theme,
+    required bool isHidenMonth,
   }) async {
     return await Navigator.push(
       context,
       _DatePickerRoute(
+        isHidenMonth: isHidenMonth,
         showTitleActions: showTitleActions,
         onChanged: onChanged,
         onConfirm: onConfirm,
@@ -98,10 +102,12 @@ class CustomDatePicker {
     locale = LocaleType.en,
     DateTime? currentTime,
     picker_theme.DatePickerTheme? theme,
+    required bool isHidenMonth,
   }) async {
     return await Navigator.push(
       context,
       _DatePickerRoute(
+        isHidenMonth: isHidenMonth,
         showTitleActions: showTitleActions,
         onChanged: onChanged,
         onConfirm: onConfirm,
@@ -132,10 +138,12 @@ class CustomDatePicker {
     locale = LocaleType.en,
     DateTime? currentTime,
     picker_theme.DatePickerTheme? theme,
+    required bool isHidenMonth,
   }) async {
     return await Navigator.push(
       context,
       _DatePickerRoute(
+        isHidenMonth: isHidenMonth,
         showTitleActions: showTitleActions,
         onChanged: onChanged,
         onConfirm: onConfirm,
@@ -157,16 +165,15 @@ class CustomDatePicker {
   ///
   /// Display date picker bottom sheet witch custom picker model.
   ///
-  static Future<DateTime?> showPicker(
-    BuildContext context, {
-    bool showTitleActions = true,
-    DateChangedCallback? onChanged,
-    DateChangedCallback? onConfirm,
-    DateCancelledCallback? onCancel,
-    locale = LocaleType.en,
-    BasePickerModel? pickerModel,
-    picker_theme.DatePickerTheme? theme,
-  }) async {
+  static Future<DateTime?> showPicker(BuildContext context,
+      {bool showTitleActions = true,
+      DateChangedCallback? onChanged,
+      DateChangedCallback? onConfirm,
+      DateCancelledCallback? onCancel,
+      locale = LocaleType.en,
+      BasePickerModel? pickerModel,
+      picker_theme.DatePickerTheme? theme,
+      required bool isHidenMonth}) async {
     return await Navigator.push(
       context,
       _DatePickerRoute(
@@ -179,6 +186,7 @@ class CustomDatePicker {
         barrierLabel:
             MaterialLocalizations.of(context).modalBarrierDismissLabel,
         pickerModel: pickerModel,
+        isHidenMonth: isHidenMonth,
       ),
     );
   }
@@ -186,6 +194,7 @@ class CustomDatePicker {
 
 class _DatePickerRoute<T> extends PopupRoute<T> {
   _DatePickerRoute({
+    required this.isHidenMonth,
     this.showTitleActions,
     this.onChanged,
     this.onConfirm,
@@ -206,6 +215,8 @@ class _DatePickerRoute<T> extends PopupRoute<T> {
   final LocaleType? locale;
   final picker_theme.DatePickerTheme theme;
   final BasePickerModel pickerModel;
+
+  final bool isHidenMonth;
 
   @override
   Duration get transitionDuration => const Duration(milliseconds: 200);
@@ -240,6 +251,7 @@ class _DatePickerRoute<T> extends PopupRoute<T> {
         locale: this.locale,
         route: this,
         pickerModel: pickerModel,
+        isHidenMonth: isHidenMonth,
       ),
     );
     return InheritedTheme.captureAll(context, bottomSheet);
@@ -253,6 +265,7 @@ class _DatePickerComponent extends StatefulWidget {
     required this.pickerModel,
     this.onChanged,
     this.locale,
+    required this.isHidenMonth,
   }) : super(key: key);
 
   final DateChangedCallback? onChanged;
@@ -262,6 +275,8 @@ class _DatePickerComponent extends StatefulWidget {
   final LocaleType? locale;
 
   final BasePickerModel pickerModel;
+
+  final bool isHidenMonth;
 
   @override
   State<StatefulWidget> createState() {
@@ -309,7 +324,7 @@ class _DatePickerState extends State<_DatePickerComponent> {
               child: GestureDetector(
                 child: Material(
                   color: theme.backgroundColor,
-                  child: _renderPickerView(theme),
+                  child: _renderPickerView(theme, widget.isHidenMonth),
                 ),
               ),
             ),
@@ -325,8 +340,9 @@ class _DatePickerState extends State<_DatePickerComponent> {
     }
   }
 
-  Widget _renderPickerView(picker_theme.DatePickerTheme theme) {
-    Widget itemView = _renderItemView(theme);
+  Widget _renderPickerView(
+      picker_theme.DatePickerTheme theme, bool isHidenMonth) {
+    Widget itemView = _renderItemView(theme, isHidenMonth);
     if (widget.route.showTitleActions == true) {
       return Column(
         children: <Widget>[
@@ -395,7 +411,8 @@ class _DatePickerState extends State<_DatePickerComponent> {
     );
   }
 
-  Widget _renderItemView(picker_theme.DatePickerTheme theme) {
+  Widget _renderItemView(
+      picker_theme.DatePickerTheme theme, bool isHidenMonth) {
     return Container(
       color: theme.backgroundColor,
       child: Directionality(
@@ -424,23 +441,25 @@ class _DatePickerState extends State<_DatePickerComponent> {
               widget.pickerModel.leftDivider(),
               style: theme.itemStyle,
             ),
-            Container(
-              child: widget.pickerModel.layoutProportions()[1] > 0
-                  ? _renderColumnView(
-                      ValueKey(widget.pickerModel.currentLeftIndex()),
-                      theme,
-                      widget.pickerModel.middleStringAtIndex,
-                      middleScrollCtrl,
-                      widget.pickerModel.layoutProportions()[1], (index) {
-                      widget.pickerModel.setMiddleIndex(index);
-                    }, (index) {
-                      setState(() {
-                        refreshScrollOffset();
-                        _notifyDateChanged();
-                      });
-                    })
-                  : null,
-            ),
+            isHidenMonth
+                ? Container()
+                : Container(
+                    child: widget.pickerModel.layoutProportions()[1] > 0
+                        ? _renderColumnView(
+                            ValueKey(widget.pickerModel.currentLeftIndex()),
+                            theme,
+                            widget.pickerModel.middleStringAtIndex,
+                            middleScrollCtrl,
+                            widget.pickerModel.layoutProportions()[1], (index) {
+                            widget.pickerModel.setMiddleIndex(index);
+                          }, (index) {
+                            setState(() {
+                              refreshScrollOffset();
+                              _notifyDateChanged();
+                            });
+                          })
+                        : null,
+                  ),
             Text(
               widget.pickerModel.rightDivider(),
               style: theme.itemStyle,

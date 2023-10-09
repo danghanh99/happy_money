@@ -2,20 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
+import '../../../custom/custom_toggle_switch.dart';
+
 class MonthYearHeader extends StatefulWidget {
   MonthYearHeader({
     super.key,
     required this.currentDate,
     required this.onChangeDate,
+    required this.onChangeMonthYear,
+    required this.isFilterByYear,
   });
 
   DateTime currentDate;
   Function(DateTime) onChangeDate;
+  Function(String) onChangeMonthYear;
+  bool isFilterByYear;
   @override
   State<MonthYearHeader> createState() => _MonthYearHeaderState();
 }
 
 class _MonthYearHeaderState extends State<MonthYearHeader> {
+  List<String> monYe = ['Month', 'Year'];
   @override
   initState() {
     super.initState();
@@ -36,7 +43,7 @@ class _MonthYearHeaderState extends State<MonthYearHeader> {
             ),
           ),
         ),
-        ToggleSwitch(
+        CustomToggleSwitch(
           borderWidth: 2.sp,
           borderColor: const [
             Color.fromARGB(255, 242, 234, 234),
@@ -44,7 +51,7 @@ class _MonthYearHeaderState extends State<MonthYearHeader> {
           minWidth: 130.w,
           minHeight: 35.h,
           fontSize: 16.0,
-          initialLabelIndex: 1,
+          initialLabelIndex: widget.isFilterByYear ? 1 : 0,
           activeBgColor: [
             Colors.green,
             Color.fromARGB(255, 88, 219, 32),
@@ -53,9 +60,9 @@ class _MonthYearHeaderState extends State<MonthYearHeader> {
           inactiveBgColor: Colors.white,
           inactiveFgColor: Colors.grey[900],
           totalSwitches: 2,
-          labels: ['Month', 'Year'],
+          labels: monYe,
           onToggle: (index) {
-            print('switched to: $index');
+            widget.onChangeMonthYear.call(monYe[index!]);
           },
         ),
         GestureDetector(
