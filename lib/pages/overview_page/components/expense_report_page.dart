@@ -46,27 +46,11 @@ class _ExpenseReportPageState extends State<ExpenseReportPage> {
     int countLastMonth = countSpentMonth(
         widget.listTransaction, DateTime(now.year, now.month - 1));
 
-    double heightThisWeek = countThisWeek >= countLastWeek
-        ? 1
-        : (countLastWeek <= 0
-            ? 0
-            : 1 - (countLastWeek - countThisWeek) / countLastWeek);
-    double heightLastWeek = countLastWeek >= countThisWeek
-        ? 1
-        : (countThisWeek <= 0
-            ? 0
-            : 1 - (countThisWeek - countLastWeek) / countThisWeek);
+    double heightThisWeek = countHeight(countThisWeek, countLastWeek);
+    double heightLastWeek = countHeight(countLastWeek, countThisWeek);
 
-    double heightThisMonth = countThisMonth >= countLastMonth
-        ? 1
-        : (countLastMonth <= 0
-            ? 0
-            : 1 - (countLastMonth - countThisMonth) / countLastMonth);
-    double heightLastMonth = countLastMonth >= countThisMonth
-        ? 1
-        : (countThisMonth <= 0
-            ? 0
-            : 1 - (countThisMonth - countLastMonth) / countThisMonth);
+    double heightThisMonth = countHeight(countThisMonth, countLastMonth);
+    double heightLastMonth = countHeight(countLastMonth, countThisMonth);
 
     List<String> hashWeek = countSpendTheMostHash(
         listWeek(widget.listTransaction, now), widget.listCategoryDTO, now);
@@ -184,68 +168,73 @@ class _ExpenseReportPageState extends State<ExpenseReportPage> {
                           SizedBox(
                             height: 25.h,
                           ),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Column(
-                                children: [
-                                  Text(
-                                    FormatMoney.formatTo(
-                                        filterByWeek
-                                            ? countLastWeek
-                                            : countLastMonth,
-                                        null),
-                                  ),
-                                  Container(
-                                    width: 80.w,
-                                    height: filterByWeek
-                                        ? heightLastWeek * 150.h
-                                        : heightLastMonth * 150.h,
-                                    decoration: BoxDecoration(
-                                      color: Colors.red,
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(7.0.sp)),
+                          Container(
+                            height: 200.h,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Text(
+                                      FormatMoney.formatTo(
+                                          filterByWeek
+                                              ? countLastWeek
+                                              : countLastMonth,
+                                          null),
                                     ),
-                                  ),
-                                  Text("Last " +
-                                      (filterByWeek ? "Week" : "Month")),
-                                ],
-                              ),
-                              SizedBox(
-                                width: 20.w,
-                              ),
-                              Column(
-                                children: [
-                                  Text(
-                                    FormatMoney.formatTo(
-                                        filterByWeek
-                                            ? countThisWeek
-                                            : countThisMonth,
-                                        null),
-                                  ),
-                                  Container(
-                                    width: 80.w,
-                                    height: filterByWeek
-                                        ? heightThisWeek * 150.h
-                                        : heightThisMonth * 150.h,
-                                    decoration: BoxDecoration(
-                                      border: Border(
-                                        bottom: BorderSide(
-                                          color: Colors.black,
-                                          width: 3.0,
-                                        ),
+                                    Container(
+                                      width: 80.w,
+                                      height: filterByWeek
+                                          ? heightLastWeek * 150.h
+                                          : heightLastMonth * 150.h,
+                                      decoration: BoxDecoration(
+                                        color: Colors.red,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(7.0.sp)),
                                       ),
-                                      color: Colors.red,
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(7.0.sp)),
                                     ),
-                                  ),
-                                  Text("This " +
-                                      (filterByWeek ? "Week" : "Month")),
-                                ],
-                              ),
-                            ],
+                                    Text("Last " +
+                                        (filterByWeek ? "Week" : "Month")),
+                                  ],
+                                ),
+                                SizedBox(
+                                  width: 20.w,
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Text(
+                                      FormatMoney.formatTo(
+                                          filterByWeek
+                                              ? countThisWeek
+                                              : countThisMonth,
+                                          null),
+                                    ),
+                                    Container(
+                                      width: 80.w,
+                                      height: filterByWeek
+                                          ? heightThisWeek * 150.h
+                                          : heightThisMonth * 150.h,
+                                      decoration: BoxDecoration(
+                                        border: Border(
+                                          bottom: BorderSide(
+                                            color: Colors.black,
+                                            width: 3.0,
+                                          ),
+                                        ),
+                                        color: Colors.red,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(7.0.sp)),
+                                      ),
+                                    ),
+                                    Text("This " +
+                                        (filterByWeek ? "Week" : "Month")),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                           SizedBox(
                             height: 25.h,
@@ -444,6 +433,24 @@ DateTime findFirstDateOfTheMonth(DateTime dateTime) {
 }
 
 String countTrend(int last, int current) {
-  int trendPercent = last <= 0 ? 0 : 100 * (current - last) ~/ last;
+  int trendPercent = 0;
+  if (last == current) trendPercent = 0;
+
+  if (last == 0) {
+    trendPercent = 100;
+  } else {
+    trendPercent = 100 * (current - last) ~/ last;
+  }
+
   return (trendPercent > 0 ? "+" : "-") + trendPercent.toString() + "%";
+}
+
+double countHeight(int first, int second) {
+  if (first == second) {
+    if (first > 0) return 1;
+    return 0;
+  }
+
+  if (first > second) return 1;
+  return first / second;
 }
