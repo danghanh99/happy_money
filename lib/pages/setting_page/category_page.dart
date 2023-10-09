@@ -43,6 +43,7 @@ class _CategoryPageState extends State<CategoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: ValueListenableBuilder(
         valueListenable: Hive.box<CategoryDTO>('CategoryDTOBox').listenable(),
         builder: (context, categoryDTOBox, widget) {
