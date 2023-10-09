@@ -420,11 +420,13 @@ class _ReportPageState extends State<ReportPage> {
                                                       ],
                                                     ),
                                                     Text(
-                                                      convertList2(
-                                                              listTransactionModel,
-                                                              showIncome)[index]
-                                                          .amount
-                                                          .toString(),
+                                                      FormatMoney.formatTo(
+                                                          convertList2(listTransactionModel,
+                                                                          showIncome)[
+                                                                      index]
+                                                                  .amount ??
+                                                              0,
+                                                          null),
                                                       style: TextStyle(
                                                         fontSize: 20.sp,
                                                         fontWeight:

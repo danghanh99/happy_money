@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../components/format_money.dart';
+
 class TotalBalance extends StatelessWidget {
   const TotalBalance({
     super.key,
-    this.child,
+    required this.total,
   });
 
-  final Widget? child;
+  final int total;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +19,7 @@ class TotalBalance extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('2,000,000đ',
+            Text(FormatMoney.formatTo(total, "VND"),
                 style: TextStyle(
                   fontSize: 30.sp,
                   fontWeight: FontWeight.bold,

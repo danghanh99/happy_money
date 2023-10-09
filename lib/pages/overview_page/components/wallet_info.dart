@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../components/format_money.dart';
+
 class WalletInfo extends StatelessWidget {
   const WalletInfo({
     super.key,
-    this.child,
+    required this.total,
   });
 
-  final Widget? child;
-
+  final int total;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -85,7 +86,7 @@ class WalletInfo extends StatelessWidget {
                       color: const Color.fromARGB(255, 14, 73, 122),
                     )),
                 const Spacer(),
-                Text('2,500,000 d',
+                Text(FormatMoney.formatTo(total, "VND"),
                     style: TextStyle(
                       fontSize: 20.sp,
                       fontWeight: FontWeight.w500,
