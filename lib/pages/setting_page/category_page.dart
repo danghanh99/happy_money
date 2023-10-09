@@ -190,6 +190,8 @@ class _CategoryPageState extends State<CategoryPage> {
                               itemCount: listCategorySpending.length,
                               itemBuilder: (context, index) {
                                 return CategoryItem(
+                                  colorValue:
+                                      listCategorySpending[index].colorValue,
                                   name: listCategorySpending[index].name,
                                   iconPath:
                                       listCategorySpending[index].iconPath,
