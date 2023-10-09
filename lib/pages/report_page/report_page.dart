@@ -70,7 +70,7 @@ class _ReportPageState extends State<ReportPage> {
               child: Column(
                 children: [
                   ReportHeader(
-                    total: inComeMoney - spendingMoney,
+                    total: total,
                   ),
                   SizedBox(
                     height: 10.h,
@@ -448,7 +448,10 @@ class _ReportPageState extends State<ReportPage> {
   int countTotal(List<TransactionDTO> list) {
     int total = 0;
     list.forEach((element) {
-      total = total + element.amount!;
+      total = total +
+          (element.category!.isSpending
+              ? element.amount! * -1
+              : element.amount!);
     });
     return total;
   }
