@@ -9,6 +9,7 @@ import 'package:happy_money/data/models/transactionn_dto.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
 import '../../../components/spend_model.dart';
+import '../../../custom/custom_toggle_switch.dart';
 import '../../../data/models/category_dto.dart';
 
 class ExpenseReportPage extends StatefulWidget {
@@ -44,6 +45,20 @@ class _ExpenseReportPageState extends State<ExpenseReportPage> {
     int countThisMonth = countSpentMonth(widget.listTransaction, now);
     int countLastMonth = countSpentMonth(
         widget.listTransaction, DateTime(now.year, now.month - 1));
+
+    double heightThisWeek = countThisWeek >= countLastWeek
+        ? 1
+        : 1 - (countLastWeek - countThisWeek) / countLastWeek;
+    double heightLastWeek = countLastWeek >= countThisWeek
+        ? 1
+        : 1 - (countThisWeek - countLastWeek) / countThisWeek;
+
+    double heightThisMonth = countThisMonth >= countLastMonth
+        ? 1
+        : 1 - (countLastMonth - countThisMonth) / countLastMonth;
+    double heightLastMonth = countLastMonth >= countThisMonth
+        ? 1
+        : 1 - (countThisMonth - countLastMonth) / countThisMonth;
 
     List<String> hashWeek = countSpendTheMostHash(
         listWeek(widget.listTransaction, now), widget.listCategoryDTO, now);
@@ -89,7 +104,7 @@ class _ExpenseReportPageState extends State<ExpenseReportPage> {
                     SizedBox(
                       height: 15.h,
                     ),
-                    ToggleSwitch(
+                    CustomToggleSwitch(
                       borderWidth: 2.sp,
                       borderColor: const [
                         Color.fromARGB(255, 245, 242, 242),
@@ -98,7 +113,10 @@ class _ExpenseReportPageState extends State<ExpenseReportPage> {
                       minHeight: 35.h,
                       fontSize: 16.0,
                       initialLabelIndex: filterByWeek ? 0 : 1,
-                      activeBgColor: [Colors.white],
+                      activeBgColor: [
+                        Colors.green,
+                        Color.fromARGB(255, 88, 219, 32),
+                      ],
                       activeFgColor: Colors.black,
                       inactiveBgColor: const Color.fromARGB(255, 245, 242, 242),
                       inactiveFgColor: Colors.grey[900],
@@ -151,10 +169,6 @@ class _ExpenseReportPageState extends State<ExpenseReportPage> {
                                       style: TextStyle(
                                         fontSize: 17.sp,
                                       )),
-                                  // Icon(
-                                  //   Icons.percent,
-                                  //   size: 18.sp,
-                                  // ),
                                 ],
                               ),
                             ],
@@ -177,14 +191,17 @@ class _ExpenseReportPageState extends State<ExpenseReportPage> {
                                   ),
                                   Container(
                                     width: 80.w,
-                                    height: 50.h,
+                                    height: filterByWeek
+                                        ? heightLastWeek * 150.h
+                                        : heightLastMonth * 150.h,
                                     decoration: BoxDecoration(
                                       color: Colors.red,
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(7.0.sp)),
                                     ),
                                   ),
-                                  const Text("Last Month"),
+                                  Text("Last " +
+                                      (filterByWeek ? "Week" : "Month")),
                                 ],
                               ),
                               SizedBox(
@@ -201,7 +218,9 @@ class _ExpenseReportPageState extends State<ExpenseReportPage> {
                                   ),
                                   Container(
                                     width: 80.w,
-                                    height: 150.h,
+                                    height: filterByWeek
+                                        ? heightThisWeek * 150.h
+                                        : heightThisMonth * 150.h,
                                     decoration: BoxDecoration(
                                       border: Border(
                                         bottom: BorderSide(
@@ -214,7 +233,8 @@ class _ExpenseReportPageState extends State<ExpenseReportPage> {
                                           Radius.circular(7.0.sp)),
                                     ),
                                   ),
-                                  const Text("This Month"),
+                                  Text("This " +
+                                      (filterByWeek ? "Week" : "Month")),
                                 ],
                               ),
                             ],
