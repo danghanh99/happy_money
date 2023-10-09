@@ -48,17 +48,25 @@ class _ExpenseReportPageState extends State<ExpenseReportPage> {
 
     double heightThisWeek = countThisWeek >= countLastWeek
         ? 1
-        : 1 - (countLastWeek - countThisWeek) / countLastWeek;
+        : (countLastWeek <= 0
+            ? 0
+            : 1 - (countLastWeek - countThisWeek) / countLastWeek);
     double heightLastWeek = countLastWeek >= countThisWeek
         ? 1
-        : 1 - (countThisWeek - countLastWeek) / countThisWeek;
+        : (countThisWeek <= 0
+            ? 0
+            : 1 - (countThisWeek - countLastWeek) / countThisWeek);
 
     double heightThisMonth = countThisMonth >= countLastMonth
         ? 1
-        : 1 - (countLastMonth - countThisMonth) / countLastMonth;
+        : (countLastMonth <= 0
+            ? 0
+            : 1 - (countLastMonth - countThisMonth) / countLastMonth);
     double heightLastMonth = countLastMonth >= countThisMonth
         ? 1
-        : 1 - (countThisMonth - countLastMonth) / countThisMonth;
+        : (countThisMonth <= 0
+            ? 0
+            : 1 - (countThisMonth - countLastMonth) / countThisMonth);
 
     List<String> hashWeek = countSpendTheMostHash(
         listWeek(widget.listTransaction, now), widget.listCategoryDTO, now);
@@ -436,6 +444,6 @@ DateTime findFirstDateOfTheMonth(DateTime dateTime) {
 }
 
 String countTrend(int last, int current) {
-  int trendPercent = 100 * (current - last) ~/ last;
+  int trendPercent = last <= 0 ? 0 : 100 * (current - last) ~/ last;
   return (trendPercent > 0 ? "+" : "-") + trendPercent.toString() + "%";
 }
