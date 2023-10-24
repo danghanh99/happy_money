@@ -7,7 +7,7 @@ import '../boxes.dart';
 class CategoryDTOHive {
   static Future<int> addCategoryDTO({
     required String name,
-    String? iconPath,
+    required String iconPath,
     required Color color,
     required bool isSpending,
   }) async {

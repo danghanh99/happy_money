@@ -56,9 +56,11 @@ class CategoryDataSource {
     }
   }
 
-  static bool addCategoryDTO(String name, Color color, bool isSpending) {
+  static bool addCategoryDTO(
+      String name, Color color, bool isSpending, String iconPath) {
     try {
       CategoryDTOHive.addCategoryDTO(
+        iconPath: iconPath,
         name: name,
         color: color,
         isSpending: isSpending,

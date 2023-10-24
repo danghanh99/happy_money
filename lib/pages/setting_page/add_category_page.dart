@@ -4,6 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../components/toast.dart';
+import '../../custom/const_icon.dart';
+import '../../custom/custom_icon.dart';
 import '../../data/hive_service/data_source/category_data_source.dart';
 
 class AddCategoryPage extends StatefulWidget {
@@ -16,11 +18,14 @@ class AddCategoryPage extends StatefulWidget {
 }
 
 class _AddCategoryPageState extends State<AddCategoryPage> {
+  List<CustomIcon> listCustomIcon = ConstIcon.getListIcons();
+  late String iconDataName;
   TextEditingController textEditingController = new TextEditingController();
   int _groupValue = -1;
   Color currentColor = Colors.white;
   @override
   void initState() {
+    iconDataName = listCustomIcon[0].name;
     _groupValue = 0;
     super.initState();
   }
@@ -81,9 +86,11 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                           textEditingController.value.text.toString().length >
                               0) {
                         if (CategoryDataSource.addCategoryDTO(
-                            textEditingController.value.text,
-                            currentColor,
-                            _groupValue == 0)) {
+                          textEditingController.value.text,
+                          currentColor,
+                          _groupValue == 0,
+                          iconDataName,
+                        )) {
                           Navigator.pop(context);
                           CustomToast.show(
                             context,
@@ -215,9 +222,11 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                   height: 20.h,
                 ),
                 ColorPicker(
-                    pickerAreaHeightPercent: 0.4,
+                    displayThumbColor: true,
+                    paletteType: PaletteType.hueWheel,
+                    pickerAreaHeightPercent: 0.7,
                     colorPickerWidth: 300.w,
-                    portraitOnly: true,
+                    portraitOnly: false,
                     enableAlpha: false,
                     labelTypes: [],
                     pickerColor: currentColor,

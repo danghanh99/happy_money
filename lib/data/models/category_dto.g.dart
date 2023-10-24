@@ -18,7 +18,7 @@ class CategoryDTOAdapter extends TypeAdapter<CategoryDTO> {
     };
     return CategoryDTO(
       name: fields[10] as String,
-      iconPath: fields[11] as String?,
+      iconPath: fields[11] as String,
       colorValue: fields[12] as int?,
       isSpending: fields[13] as bool,
       uniqueKey: fields[14] as String,

@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:happy_money/data/models/category_dto.dart';
 import 'package:happy_money/pages/setting_page/add_category_page.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import '../add_transaction_page/add_transaction_page.dart';
+import '../../custom/const_icon.dart';
 import '../add_transaction_page/list_category/components/category_item.dart';
 import '../report_page/components/toggle_line.dart';
 import 'category_item_page.dart';
@@ -172,6 +172,10 @@ class _CategoryPageState extends State<CategoryPage> {
                                         builder: (context) => CategoryItemPage(
                                           categoryDTO:
                                               listCategoryIncome[index],
+                                          initialIndex:
+                                              ConstIcon.getIconIndexByName(
+                                                  listCategoryIncome[index]
+                                                      .iconPath),
                                         ),
                                       ),
                                     );
@@ -205,6 +209,10 @@ class _CategoryPageState extends State<CategoryPage> {
                                         builder: (context) => CategoryItemPage(
                                           categoryDTO:
                                               listCategorySpending[index],
+                                          initialIndex:
+                                              ConstIcon.getIconIndexByName(
+                                                  listCategorySpending[index]
+                                                      .iconPath),
                                         ),
                                       ),
                                     );

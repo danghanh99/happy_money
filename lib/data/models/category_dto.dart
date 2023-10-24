@@ -6,7 +6,7 @@ part 'category_dto.g.dart';
 class CategoryDTO {
   CategoryDTO({
     required this.name,
-    this.iconPath,
+    required this.iconPath,
     required this.colorValue,
     required this.isSpending,
     required this.uniqueKey,
@@ -18,7 +18,7 @@ class CategoryDTO {
 
   @HiveField(11)
   @JsonKey(name: 'iconPath', required: false)
-  late String? iconPath;
+  late String iconPath;
 
   @HiveField(12)
   @JsonKey(name: 'colorValue', required: false)

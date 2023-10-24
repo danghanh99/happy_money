@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../custom/const_icon.dart';
+
 class CategoryItem extends StatefulWidget {
   const CategoryItem({
     super.key,
     required this.name,
-    this.iconPath,
+    required this.iconPath,
     required this.onTap,
     required this.checked,
     this.colorValue,
   });
 
   final String name;
-  final String? iconPath;
+  final String iconPath;
   final Function() onTap;
   final bool checked;
   final int? colorValue;
@@ -41,19 +43,25 @@ class _CategoryItemState extends State<CategoryItem> {
         child: Row(
           children: [
             Container(
-              color: widget.colorValue == null
-                  ? Colors.white
-                  : Color(widget.colorValue!),
-              child: Icon(
-                Icons.home,
-                size: 50.sp,
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(color: Colors.grey)),
+              child: Padding(
+                padding: EdgeInsets.all(9.0.sp),
+                child: Icon(
+                  ConstIcon.getIconData(widget.iconPath),
+                  size: 30.sp,
+                  color: widget.colorValue == null
+                      ? Colors.white
+                      : Color(widget.colorValue!),
+                ),
               ),
             ),
             SizedBox(
-              width: 5.w,
+              width: 15.w,
             ),
             Container(
-              width: width - 70,
+              width: width - 80,
               decoration: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
