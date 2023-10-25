@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:happy_money/components/format_money.dart';
 import 'package:happy_money/components/pie_chart/custom_chart_values_options.dart';
+import 'package:happy_money/custom/const_icon.dart';
 import 'package:happy_money/data/hive_service/service/transaction_dto_hive.dart';
 import 'package:happy_money/data/models/transactionn_dto.dart';
 import 'package:happy_money/pages/report_page/components/month_year_header.dart';
@@ -350,14 +351,9 @@ class _ReportPageState extends State<ReportPage> {
                                                         ));
                                               },
                                               child: Container(
+                                                height: 50.h,
                                                 decoration: BoxDecoration(
-                                                  color: Color(
-                                                    convertList2(
-                                                            listTransactionModel,
-                                                            showIncome)[index]
-                                                        .category!
-                                                        .colorValue!,
-                                                  ),
+                                                  color: Colors.white,
                                                   border: Border(
                                                     top: BorderSide(
                                                       color: Colors.grey,
@@ -379,14 +375,33 @@ class _ReportPageState extends State<ReportPage> {
                                                           CrossAxisAlignment
                                                               .center,
                                                       children: [
-                                                        Icon(
-                                                          Icons.home,
-                                                          size: 50.sp,
+                                                        SizedBox(
+                                                          width: 10.w,
+                                                        ),
+                                                        Container(
+                                                          width: 20.w,
+                                                          height: 20.h,
+                                                          child: Icon(
+                                                            ConstIcon.getIconData(
+                                                                convertList2(
+                                                                        listTransactionModel,
+                                                                        showIncome)[index]
+                                                                    .category!
+                                                                    .iconPath),
+                                                            color: Color(convertList2(
+                                                                    listTransactionModel,
+                                                                    showIncome)[index]
+                                                                .category!
+                                                                .colorValue!),
+                                                          ),
                                                         ),
                                                         SizedBox(
-                                                          width: 5.w,
+                                                          width: 15.w,
                                                         ),
                                                         Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
                                                           children: [
                                                             Text(
                                                               convertList2(
@@ -402,19 +417,19 @@ class _ReportPageState extends State<ReportPage> {
                                                                         .w400,
                                                               ),
                                                             ),
-                                                            Text(
-                                                              convertList2(listTransactionModel,
-                                                                              showIncome)[
-                                                                          index]
-                                                                      .note ??
-                                                                  "",
-                                                              style: TextStyle(
-                                                                fontSize: 20.sp,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w300,
-                                                              ),
-                                                            ),
+                                                            // Text(
+                                                            //   convertList2(listTransactionModel,
+                                                            //                   showIncome)[
+                                                            //               index]
+                                                            //           .note ??
+                                                            //       "",
+                                                            //   style: TextStyle(
+                                                            //     fontSize: 20.sp,
+                                                            //     fontWeight:
+                                                            //         FontWeight
+                                                            //             .w300,
+                                                            //   ),
+                                                            // ),
                                                           ],
                                                         ),
                                                       ],

@@ -121,16 +121,13 @@ class _AddTransactionPage2State extends State<AddTransactionPage2> {
                     ],
                   ),
                   SizedBox(
-                    height: 20.h,
+                    height: 10.h,
                   ),
                   CategoryPage(
                     transactionDTO: widget.transactionDTO,
                     goToCategory: () {
                       widget.goToCategory.call();
                     },
-                  ),
-                  SizedBox(
-                    height: 15.h,
                   ),
                   Note(
                       setNote: (value) {

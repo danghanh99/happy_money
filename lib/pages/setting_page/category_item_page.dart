@@ -295,8 +295,8 @@ class _CategoryItemPageState extends State<CategoryItemPage> {
                                           });
                                         },
                                         child: Container(
-                                          width: 20,
-                                          height: 10,
+                                          width: 20.w,
+                                          height: 10.h,
                                           decoration: BoxDecoration(
                                             border: Border.all(
                                               width: 1.sp,

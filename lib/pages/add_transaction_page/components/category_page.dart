@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:happy_money/data/models/transactionn_dto.dart';
 
+import '../../../custom/const_icon.dart';
+
 class CategoryPage extends StatefulWidget {
   const CategoryPage({
     super.key,
@@ -31,15 +33,24 @@ class _CategoryPageState extends State<CategoryPage> {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        widget.transactionDTO.category == null
-            ? Icon(
-                Icons.rounded_corner_outlined,
-                size: 50.sp,
-              )
-            : Icon(
-                Icons.home,
-                size: 50.sp,
-              ),
+        Padding(
+          padding: EdgeInsets.only(bottom: 10.sp),
+          child: Container(
+            width: 50.w,
+            height: 50.h,
+            child: widget.transactionDTO.category == null
+                ? Icon(
+                    Icons.rounded_corner_outlined,
+                    size: 30.sp,
+                  )
+                : Icon(
+                    ConstIcon.getIconData(
+                        widget.transactionDTO.category!.iconPath),
+                    color: Color(widget.transactionDTO.category!.colorValue!),
+                    size: 30.sp,
+                  ),
+          ),
+        ),
         SizedBox(
           width: 10.w,
         ),

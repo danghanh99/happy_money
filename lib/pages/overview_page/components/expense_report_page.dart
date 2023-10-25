@@ -9,6 +9,7 @@ import 'package:happy_money/data/models/transactionn_dto.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
 import '../../../components/spend_model.dart';
+import '../../../custom/const_icon.dart';
 import '../../../custom/custom_toggle_switch.dart';
 import '../../../data/models/category_dto.dart';
 
@@ -256,12 +257,23 @@ class _ExpenseReportPageState extends State<ExpenseReportPage> {
                                 children: [
                                   Row(
                                     children: [
-                                      Icon(
-                                        Icons.rounded_corner_outlined,
-                                        size: 50.sp,
+                                      Container(
+                                        width: 20.w,
+                                        height: 20.h,
+                                        child: Icon(
+                                          ConstIcon.getIconData(filterByWeek
+                                              ? hashWeek[3]
+                                              : hashMonth[3]),
+                                          color: Color(
+                                            int.parse(filterByWeek
+                                                ? hashWeek[4]
+                                                : hashMonth[4]),
+                                          ),
+                                          size: 30.sp,
+                                        ),
                                       ),
                                       SizedBox(
-                                        width: 10.w,
+                                        width: 20.w,
                                       ),
                                       Column(
                                         crossAxisAlignment:
@@ -401,7 +413,12 @@ List<String> countSpendTheMostHash(
             element.category!.isSpending)
         .toList();
     int total = list.map((e) => e.amount).fold(0, (a, b) => a + (b ?? 0));
-    SpendModel spent = new SpendModel(name: category.name, spent: total);
+    SpendModel spent = new SpendModel(
+      name: category.name,
+      spent: total,
+      iconPath: category.iconPath,
+      colorvalue: category.colorValue!,
+    );
     listSpendModel.add(spent);
   });
 
@@ -412,8 +429,16 @@ List<String> countSpendTheMostHash(
   int total = listSpendModel.map((e) => e.spent).fold(0, (a, b) => a + b);
 
   int percent = total <= 0 ? 0 : 100 * categoryAmount ~/ total;
+  String iconPath = listSpendModel[listSpendModel.length - 1].iconPath;
+  int colorValue = listSpendModel[listSpendModel.length - 1].colorvalue;
 
-  return [categoryName, categoryAmount.toString(), percent.toString()];
+  return [
+    categoryName,
+    categoryAmount.toString(),
+    percent.toString(),
+    iconPath,
+    colorValue.toString(),
+  ];
 }
 
 DateTime findFirstDateOfTheWeek(DateTime dateTime) {
