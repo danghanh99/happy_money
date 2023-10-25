@@ -5,6 +5,7 @@ import 'package:happy_money/data/models/category_dto.dart';
 import 'package:happy_money/pages/add_transaction_page/list_category/components/category_item.dart';
 
 import '../../../data/hive_service/data_source/category_data_source.dart';
+import '../../report_page/components/toggle_line.dart';
 
 class ListCategoryPage extends StatefulWidget {
   const ListCategoryPage({
@@ -26,6 +27,7 @@ class _ListCategoryPageState extends State<ListCategoryPage> {
   List<CategoryDTO> listCategory = [];
   int? selectedCategoryIndexIncome;
   int? selectedCategoryIndexSpending;
+  bool showIncome = false;
   @override
   void initState() {
     super.initState();
@@ -107,73 +109,82 @@ class _ListCategoryPageState extends State<ListCategoryPage> {
           SizedBox(
             height: 20.h,
           ),
-          Text(
-            "Spending",
-            style: TextStyle(
-              fontSize: 20.sp,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-          SizedBox(
-            height: 10.h,
-          ),
-          Expanded(
-            child: ListView.builder(
-              padding: EdgeInsets.zero,
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              itemCount: listCategorySpending.length,
-              itemBuilder: (context, index) {
-                return CategoryItem(
-                  colorValue: listCategorySpending[index].colorValue,
-                  name: listCategorySpending[index].name,
-                  iconPath: listCategorySpending[index].iconPath,
-                  checked: selectedCategoryIndexSpending == index,
-                  onTap: () {
-                    setState(() {
-                      selectedCategoryIndexSpending = index;
-                    });
-                    widget.setCategory.call(listCategorySpending[index]);
-                    widget.goToAddPage.call();
-                  },
-                );
-              },
-            ),
-          ),
-          SizedBox(
-            height: 40.h,
-          ),
-          Text(
-            "Income",
-            style: TextStyle(
-              fontSize: 20.sp,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-          SizedBox(
-            height: 10.h,
-          ),
-          Expanded(
-            child: ListView.builder(
-              padding: EdgeInsets.zero,
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              itemCount: listCategoryIncome.length,
-              itemBuilder: (context, index) {
-                return CategoryItem(
-                  colorValue: listCategoryIncome[index].colorValue,
-                  name: listCategoryIncome[index].name,
-                  iconPath: listCategoryIncome[index].iconPath,
-                  checked: selectedCategoryIndexIncome == index,
-                  onTap: () {
-                    setState(() {
-                      selectedCategoryIndexIncome = index;
-                    });
-                    widget.setCategory.call(listCategoryIncome[index]);
-                    widget.goToAddPage.call();
-                  },
-                );
-              },
+          Container(
+            child: Padding(
+              padding: EdgeInsets.only(left: 10.w, right: 10.w),
+              child: Column(
+                children: [
+                  ToggleLine(
+                    showIncome: showIncome,
+                    changeToggle: () {
+                      setState(() {
+                        showIncome = !showIncome;
+                      });
+                    },
+                  ),
+                  SizedBox(
+                    height: 20.h,
+                  ),
+                  Container(
+                    height: 620.h,
+                    child: showIncome
+                        ? Expanded(
+                            child: Scrollbar(
+                              thumbVisibility: true,
+                              child: ListView.builder(
+                                padding: EdgeInsets.zero,
+                                scrollDirection: Axis.vertical,
+                                shrinkWrap: true,
+                                itemCount: listCategoryIncome.length,
+                                itemBuilder: (context, index) {
+                                  return CategoryItem(
+                                    colorValue:
+                                        listCategoryIncome[index].colorValue,
+                                    name: listCategoryIncome[index].name,
+                                    iconPath:
+                                        listCategoryIncome[index].iconPath,
+                                    checked:
+                                        selectedCategoryIndexIncome == index,
+                                    onTap: () {
+                                      widget.setCategory
+                                          .call(listCategoryIncome[index]);
+                                      widget.goToAddPage.call();
+                                    },
+                                  );
+                                },
+                              ),
+                            ),
+                          )
+                        : Expanded(
+                            child: Scrollbar(
+                              thumbVisibility: true,
+                              child: ListView.builder(
+                                padding: EdgeInsets.zero,
+                                scrollDirection: Axis.vertical,
+                                shrinkWrap: true,
+                                itemCount: listCategorySpending.length,
+                                itemBuilder: (context, index) {
+                                  return CategoryItem(
+                                    colorValue:
+                                        listCategorySpending[index].colorValue,
+                                    name: listCategorySpending[index].name,
+                                    iconPath:
+                                        listCategorySpending[index].iconPath,
+                                    checked:
+                                        selectedCategoryIndexSpending == index,
+                                    onTap: () {
+                                      widget.setCategory
+                                          .call(listCategorySpending[index]);
+                                      widget.goToAddPage.call();
+                                    },
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                  ),
+                ],
+              ),
             ),
           )
         ],
