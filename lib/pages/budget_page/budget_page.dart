@@ -1,8 +1,11 @@
-import 'dart:math';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
+
+import '../report_page/components/toggle_line.dart';
+import 'components/add_budget_button.dart';
+import 'components/budget_header.dart';
+import 'components/budget_item.dart';
 
 class BudgetPage extends StatefulWidget {
   const BudgetPage({
@@ -17,17 +20,20 @@ class BudgetPage extends StatefulWidget {
 }
 
 class _BudgetPageState extends State<BudgetPage> {
-  TextEditingController textEditingController = new TextEditingController();
-  TextEditingController groupController = new TextEditingController();
-  DateTime currentDate = DateTime.now();
+  CarouselController carouselController = new CarouselController();
+  late bool showIncome;
+
+  DateTime currentTime = DateTime.now();
   @override
   void initState() {
+    showIncome = false;
     super.initState();
-    textEditingController.text = '0';
   }
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> list = [runningPage(), finishedPage()];
+
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.only(),
@@ -36,177 +42,85 @@ class _BudgetPageState extends State<BudgetPage> {
       height: 800.h,
       child: Column(
         children: [
-          Container(
-            height: 60.h,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(),
-              color: Colors.white,
-            ),
-            child: Padding(
-              padding: EdgeInsets.only(
-                top: 10.h,
-                bottom: 10.h,
-                right: 15.h,
-                left: 15.h,
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    width: 55.w,
-                    height: 40.h,
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 223, 218, 218),
-                      borderRadius: BorderRadius.circular(10.sp),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        const Icon(
-                          Icons.wallet,
-                          color: Colors.orange,
-                        ),
-                        SizedBox(
-                          width: 5.w,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(bottom: 5.h),
-                          child: Transform.rotate(
-                            angle: -90 * pi / 180,
-                            child: Icon(
-                              Icons.arrow_back_ios,
-                              size: 13.sp,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Text(
-                    "Budget",
-                    style: TextStyle(
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Container(
-                    width: 55.w,
-                    height: 40.h,
-                    alignment: Alignment.centerRight,
-                    child: Text(
-                      "Add",
-                      style: TextStyle(
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+          BudgetHeader(),
           SizedBox(
             height: 10.h,
           ),
-          Padding(
-            padding: EdgeInsets.only(
-              left: 10.w,
-              right: 10.w,
-            ),
-            child: Column(
-              children: [
-                Text(
-                  "A financial plan helps you balance your income and expenses.",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 17.sp,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-                Text(
-                  "Budget only supports basic wallet and affiliate wallet.",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 17.sp,
-                    fontWeight: FontWeight.w400,
-                  ),
-                )
-              ],
-            ),
+          ToggleLine(
+            firstString: "Running",
+            secondString: "Finished",
+            showIncome: showIncome,
+            changeToggle: () {
+              setState(() {
+                showIncome = !showIncome;
+                carouselController.jumpToPage(showIncome ? 1 : 0);
+              });
+            },
           ),
           SizedBox(
-            height: 30.h,
+            height: 20.h,
           ),
-          Container(
-            height: 60.h,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(),
-              color: Colors.white,
+          CarouselSlider.builder(
+            itemCount: 2,
+            options: CarouselOptions(
+              viewportFraction: 1,
+              height: 659.h,
+              onPageChanged: (index, reason) {
+                setState(() {
+                  showIncome = index == 1;
+                });
+              },
             ),
-            child: Padding(
-              padding: EdgeInsets.only(
-                top: 10.h,
-                bottom: 10.h,
-                right: 15.h,
-                left: 15.h,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(
-                    Icons.add_circle,
-                    color: Colors.green,
-                  ),
-                  SizedBox(
-                    width: 5.w,
-                  ),
-                  Text(
-                    "Add Budget",
-                    style: TextStyle(
-                      color: Colors.green,
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 30.h,
-          ),
-          Container(
-            height: 60.h,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(),
-              color: Colors.white,
-            ),
-            child: Padding(
-              padding: EdgeInsets.only(
-                top: 10.h,
-                bottom: 10.h,
-                right: 15.h,
-                left: 15.h,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Finished",
-                    style: TextStyle(
-                      color: Colors.green,
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+            carouselController: carouselController,
+            itemBuilder:
+                (BuildContext context, int itemIndex, int pageViewIndex) =>
+                    list[itemIndex],
+          )
         ],
       ),
     );
+  }
+
+  Widget runningPage() {
+    return Column(
+      children: [
+        AddBudgetButton(),
+        SizedBox(
+          height: 10.h,
+        ),
+        Container(
+          height: 585.h,
+          child: Scrollbar(
+            thumbVisibility: true,
+            child: ListView.builder(
+              padding: EdgeInsets.zero,
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              itemCount: 10,
+              itemBuilder: (context, index) {
+                return Column(
+                  children: [
+                    BudgetItem(
+                        fromDate: currentTime,
+                        toDate: currentTime,
+                        iconPath: "cash",
+                        categoryName: "Electric",
+                        amount: 2000000,
+                        usedAmount: 1510003),
+                    SizedBox(
+                      height: 20.h,
+                    )
+                  ],
+                );
+              },
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget finishedPage() {
+    return Container();
   }
 }

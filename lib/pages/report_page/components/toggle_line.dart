@@ -6,10 +6,14 @@ class ToggleLine extends StatefulWidget {
     super.key,
     required this.changeToggle,
     required this.showIncome,
+    this.firstString,
+    this.secondString,
   });
 
   final Function() changeToggle;
   final bool showIncome;
+  final String? firstString;
+  final String? secondString;
   @override
   State<ToggleLine> createState() => _ToggleLineState();
 }
@@ -18,12 +22,12 @@ class _ToggleLineState extends State<ToggleLine> {
   late bool isIncome;
   @override
   initState() {
-    isIncome = widget.showIncome;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    isIncome = widget.showIncome;
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -50,7 +54,7 @@ class _ToggleLineState extends State<ToggleLine> {
               ),
             ),
             child: Text(
-              "Spending",
+              widget.firstString ?? "Spending",
               style: TextStyle(
                 color: !isIncome
                     ? Colors.green
@@ -84,7 +88,7 @@ class _ToggleLineState extends State<ToggleLine> {
               ),
             ),
             child: Text(
-              "Income",
+              widget.secondString ?? "Income",
               style: TextStyle(
                 color: isIncome
                     ? Colors.green
