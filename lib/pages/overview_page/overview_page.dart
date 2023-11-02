@@ -35,7 +35,6 @@ class _OverviewPageState extends State<OverviewPage> {
     return ValueListenableBuilder(
         valueListenable: Hive.box<WalletDTO>('WalletDTOBox').listenable(),
         builder: (context, walletDTOBox, widget) {
-          List<WalletDTO> listWallet = walletDTOBox.values.toList();
           return ValueListenableBuilder(
               valueListenable:
                   Hive.box<CategoryDTO>('CategoryDTOBox').listenable(),

@@ -15,6 +15,7 @@ class BudgetItem extends StatefulWidget {
     required this.categoryName,
     required this.amount,
     required this.usedAmount,
+    required this.colorValue,
   });
 
   DateTime fromDate;
@@ -23,6 +24,7 @@ class BudgetItem extends StatefulWidget {
   String categoryName;
   int amount;
   int usedAmount;
+  int colorValue;
   @override
   State<BudgetItem> createState() => _BudgetItemState();
 }
@@ -36,7 +38,11 @@ class _BudgetItemState extends State<BudgetItem> {
 
   @override
   Widget build(BuildContext context) {
-    percent = widget.usedAmount / widget.amount;
+    if (widget.usedAmount >= widget.amount) {
+      percent = 1;
+    } else {
+      percent = widget.usedAmount / widget.amount;
+    }
 
     return Container(
       height: 150.h,
@@ -77,7 +83,7 @@ class _BudgetItemState extends State<BudgetItem> {
                     height: 20.h,
                     child: Icon(
                       ConstIcon.getIconData(widget.iconPath),
-                      color: Colors.red,
+                      color: Color(widget.colorValue),
                     ),
                   ),
                   SizedBox(

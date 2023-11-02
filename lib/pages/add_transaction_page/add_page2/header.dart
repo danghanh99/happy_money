@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Header extends StatefulWidget {
-  const Header({
-    super.key,
-    required this.onSave,
-  });
+  const Header({super.key, required this.onSave, this.title});
 
   final Function onSave;
+  final String? title;
 
   @override
   State<Header> createState() => _HeaderState();
@@ -47,7 +45,7 @@ class _HeaderState extends State<Header> {
               ),
             ),
             Text(
-              "Add Transaction",
+              widget.title ?? "Add Transaction",
               style: TextStyle(
                 fontSize: 20.sp,
                 fontWeight: FontWeight.bold,

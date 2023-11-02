@@ -1,11 +1,17 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:happy_money/data/models/budget_dto.dart';
+import 'package:happy_money/pages/budget_page/pages/add_budget_page.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import '../../data/hive_service/data_source/category_data_source.dart';
+import '../../data/models/transactionn_dto.dart';
 import '../report_page/components/toggle_line.dart';
 import 'components/add_budget_button.dart';
 import 'components/budget_header.dart';
 import 'components/budget_item.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class BudgetPage extends StatefulWidget {
   const BudgetPage({
@@ -32,59 +38,82 @@ class _BudgetPageState extends State<BudgetPage> {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> list = [runningPage(), finishedPage()];
+    return ValueListenableBuilder(
+        valueListenable: Hive.box<BudgetDTO>('BudgetDTOBox').listenable(),
+        builder: (context, budgetDTOBox, widget) {
+          return ValueListenableBuilder(
+              valueListenable:
+                  Hive.box<TransactionDTO>('TransactionDTOBox').listenable(),
+              builder: (context, transactionDTOBox, widget) {
+                List<TransactionDTO> listTransaction =
+                    transactionDTOBox.values.toList();
+                List<BudgetDTO> listBudget = budgetDTOBox.values.toList();
+                List<Widget> list = [runningPage(listBudget), finishedPage()];
 
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(),
-        color: const Color.fromARGB(255, 245, 242, 242),
-      ),
-      height: 800.h,
-      child: Column(
-        children: [
-          BudgetHeader(),
-          SizedBox(
-            height: 10.h,
-          ),
-          ToggleLine(
-            firstString: "Running",
-            secondString: "Finished",
-            showIncome: showIncome,
-            changeToggle: () {
-              setState(() {
-                showIncome = !showIncome;
-                carouselController.jumpToPage(showIncome ? 1 : 0);
+                return Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(),
+                    color: const Color.fromARGB(255, 245, 242, 242),
+                  ),
+                  height: 800.h,
+                  child: Column(
+                    children: [
+                      BudgetHeader(),
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                      ToggleLine(
+                        firstString: "Running",
+                        secondString: "Finished",
+                        showIncome: showIncome,
+                        changeToggle: () {
+                          setState(() {
+                            showIncome = !showIncome;
+                            carouselController.jumpToPage(showIncome ? 1 : 0);
+                          });
+                        },
+                      ),
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      CarouselSlider.builder(
+                        itemCount: 2,
+                        options: CarouselOptions(
+                          viewportFraction: 1,
+                          height: 659.h,
+                          onPageChanged: (index, reason) {
+                            setState(() {
+                              showIncome = index == 1;
+                            });
+                          },
+                        ),
+                        carouselController: carouselController,
+                        itemBuilder: (BuildContext context, int itemIndex,
+                                int pageViewIndex) =>
+                            list[itemIndex],
+                      )
+                    ],
+                  ),
+                );
               });
-            },
-          ),
-          SizedBox(
-            height: 20.h,
-          ),
-          CarouselSlider.builder(
-            itemCount: 2,
-            options: CarouselOptions(
-              viewportFraction: 1,
-              height: 659.h,
-              onPageChanged: (index, reason) {
-                setState(() {
-                  showIncome = index == 1;
-                });
-              },
-            ),
-            carouselController: carouselController,
-            itemBuilder:
-                (BuildContext context, int itemIndex, int pageViewIndex) =>
-                    list[itemIndex],
-          )
-        ],
-      ),
-    );
+        });
   }
 
-  Widget runningPage() {
+  Widget runningPage(List<BudgetDTO> listBudget) {
     return Column(
       children: [
-        AddBudgetButton(),
+        GestureDetector(
+          onTap: () {
+            showMaterialModalBottomSheet(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(16.0.sp),
+                        topRight: Radius.circular(16.0.sp))),
+                context: context,
+                builder: (context) => AddBudgetPage());
+          },
+          child: AddBudgetButton(),
+        ),
         SizedBox(
           height: 10.h,
         ),
@@ -96,17 +125,23 @@ class _BudgetPageState extends State<BudgetPage> {
               padding: EdgeInsets.zero,
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
-              itemCount: 10,
+              itemCount: listBudget.length,
               itemBuilder: (context, index) {
                 return Column(
                   children: [
                     BudgetItem(
-                        fromDate: currentTime,
-                        toDate: currentTime,
-                        iconPath: "cash",
-                        categoryName: "Electric",
-                        amount: 2000000,
-                        usedAmount: 1510003),
+                      colorValue: listBudget[index].category!.colorValue!,
+                      fromDate: listBudget[index].fromDate!,
+                      toDate: listBudget[index].toDate!,
+                      iconPath: listBudget[index].category!.iconPath,
+                      categoryName: listBudget[index].category!.name,
+                      amount: listBudget[index].amount!,
+                      usedAmount: CategoryDataSource.getUsedOfCategory(
+                        listBudget[index].category!.uniqueKey,
+                        listBudget[index].fromDate!,
+                        listBudget[index].toDate!,
+                      ),
+                    ),
                     SizedBox(
                       height: 20.h,
                     )

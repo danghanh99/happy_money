@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:happy_money/data/hive_service/service/category_dto_hive.dart';
 import 'package:happy_money/data/hive_service/service/wallet_dto_hive.dart';
+import 'package:happy_money/data/models/budget_dto.dart';
 import 'package:happy_money/data/models/category_dto.dart';
 import 'package:happy_money/data/models/transactionn_dto.dart';
 import 'package:happy_money/data/models/wallet_dto.dart';
@@ -14,12 +15,14 @@ class HiveService {
     Hive.registerAdapter(WalletDTOAdapter());
     Hive.registerAdapter(CategoryDTOAdapter());
     Hive.registerAdapter(TransactionDTOAdapter());
+    Hive.registerAdapter(BudgetDTOAdapter());
   }
 
   Future<void> openBoxHive() async {
     await Hive.openBox<WalletDTO>('WalletDTOBox');
     await Hive.openBox<CategoryDTO>('CategoryDTOBox');
     await Hive.openBox<TransactionDTO>('TransactionDTOBox');
+    await Hive.openBox<BudgetDTO>('BudgetDTOBox');
   }
 
   String generateUniquekey(Box box) {
