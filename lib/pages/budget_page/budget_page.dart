@@ -110,7 +110,9 @@ class _BudgetPageState extends State<BudgetPage> {
                         topLeft: Radius.circular(16.0.sp),
                         topRight: Radius.circular(16.0.sp))),
                 context: context,
-                builder: (context) => AddBudgetPage());
+                builder: (context) => AddBudgetPage(
+                      isEdit: false,
+                    ));
           },
           child: AddBudgetButton(),
         ),
@@ -129,17 +131,31 @@ class _BudgetPageState extends State<BudgetPage> {
               itemBuilder: (context, index) {
                 return Column(
                   children: [
-                    BudgetItem(
-                      colorValue: listBudget[index].category!.colorValue!,
-                      fromDate: listBudget[index].fromDate!,
-                      toDate: listBudget[index].toDate!,
-                      iconPath: listBudget[index].category!.iconPath,
-                      categoryName: listBudget[index].category!.name,
-                      amount: listBudget[index].amount!,
-                      usedAmount: CategoryDataSource.getUsedOfCategory(
-                        listBudget[index].category!.uniqueKey,
-                        listBudget[index].fromDate!,
-                        listBudget[index].toDate!,
+                    GestureDetector(
+                      onTap: () {
+                        showMaterialModalBottomSheet(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(16.0.sp),
+                                    topRight: Radius.circular(16.0.sp))),
+                            context: context,
+                            builder: (context) => AddBudgetPage(
+                                  isEdit: true,
+                                  editBudget: listBudget[index],
+                                ));
+                      },
+                      child: BudgetItem(
+                        colorValue: listBudget[index].category!.colorValue!,
+                        fromDate: listBudget[index].fromDate!,
+                        toDate: listBudget[index].toDate!,
+                        iconPath: listBudget[index].category!.iconPath,
+                        categoryName: listBudget[index].category!.name,
+                        amount: listBudget[index].amount!,
+                        usedAmount: CategoryDataSource.getUsedOfCategory(
+                          listBudget[index].category!.uniqueKey,
+                          listBudget[index].fromDate!,
+                          listBudget[index].toDate!,
+                        ),
                       ),
                     ),
                     SizedBox(

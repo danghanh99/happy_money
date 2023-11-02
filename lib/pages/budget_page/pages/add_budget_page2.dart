@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../data/hive_service/data_source/budget_data_source.dart';
 import '../../../data/models/budget_dto.dart';
 import '../../add_transaction_page/add_page2/header.dart';
 import '../components/budget_amount.dart';
@@ -67,7 +68,7 @@ class _AddBudgetPage2State extends State<AddBudgetPage2> {
       child: Column(
         children: [
           Header(
-              title: "Add Budget",
+              title: widget.isEdit ? "Edit Budget" : "Add Budget",
               onSave: () {
                 if (widget.budgetDTO.amount != null &&
                     widget.budgetDTO.amount! > 0 &&
@@ -84,7 +85,7 @@ class _AddBudgetPage2State extends State<AddBudgetPage2> {
                   Navigator.pop(context);
                   CustomToast.show(
                     context,
-                    message: "Created Budget",
+                    message: widget.isEdit ? "Edited Budget" : "Created Budget",
                     gravity: ToastGravity.TOP,
                     backgroundColor: Colors.green,
                     textStyle: TextStyle(
@@ -255,29 +256,29 @@ class _AddBudgetPage2State extends State<AddBudgetPage2> {
           widget.isEdit
               ? GestureDetector(
                   onTap: () {
-                    // if (budgetDataSource.deletebudgetDTO(
-                    //     widget.budgetDTO.uniqueKey)) {
-                    //   Navigator.pop(context);
-                    //   CustomToast.show(
-                    //     context,
-                    //     message: "Deleted budget",
-                    //     gravity: ToastGravity.TOP,
-                    //     backgroundColor: Colors.green,
-                    //     textStyle: TextStyle(
-                    //       color: Colors.white,
-                    //     ),
-                    //   );
-                    // } else {
-                    //   CustomToast.show(
-                    //     context,
-                    //     message: "Delete budget Failed",
-                    //     gravity: ToastGravity.TOP,
-                    //     backgroundColor: Colors.red,
-                    //     textStyle: TextStyle(
-                    //       color: Colors.white,
-                    //     ),
-                    //   );
-                    // }
+                    if (BudgetDataSource.deleteBudgetDTO(
+                        widget.budgetDTO.uniqueKey)) {
+                      Navigator.pop(context);
+                      CustomToast.show(
+                        context,
+                        message: "Deleted budget",
+                        gravity: ToastGravity.TOP,
+                        backgroundColor: Colors.green,
+                        textStyle: TextStyle(
+                          color: Colors.white,
+                        ),
+                      );
+                    } else {
+                      CustomToast.show(
+                        context,
+                        message: "Delete budget Failed",
+                        gravity: ToastGravity.TOP,
+                        backgroundColor: Colors.red,
+                        textStyle: TextStyle(
+                          color: Colors.white,
+                        ),
+                      );
+                    }
                   },
                   child: Container(
                     alignment: Alignment.center,

@@ -86,7 +86,7 @@ class CategoryDataSource {
 
         List<TransactionDTO> list = boxTrans.values
             .where((element) =>
-                element.uniqueKey == uniqueKey &&
+                element.category!.uniqueKey == uniqueKey &&
                     element.createdAt!.isAfter(fromDate) &&
                     element.createdAt!.isBefore(toDate) ||
                 element.createdAt!.isAtSameMomentAs(fromDate) ||

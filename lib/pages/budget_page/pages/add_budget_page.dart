@@ -11,13 +11,13 @@ class AddBudgetPage extends StatefulWidget {
   const AddBudgetPage({
     super.key,
     // required this.listWalletDTO,
-    // this.editTransaction,
-    // required this.isEdit,
+    this.editBudget,
+    required this.isEdit,
   });
 
   // final List<WalletDTO> listWalletDTO;
-  // final BudgetDTO? editTransaction;
-  // final bool isEdit;
+  final BudgetDTO? editBudget;
+  final bool isEdit;
 
   @override
   _AddBudgetPageState createState() => _AddBudgetPageState();
@@ -36,9 +36,9 @@ class _AddBudgetPageState extends State<AddBudgetPage> {
   void initState() {
     listWallet = WalletDataSource.getListWalletDTO();
     budgetDTO.wallet = listWallet[0];
-    // if (widget.editTransaction != null) {
-    //   BudgetDTO = widget.editTransaction!;
-    // }
+    if (widget.editBudget != null) {
+      budgetDTO = widget.editBudget!;
+    }
 
     super.initState();
   }
@@ -47,7 +47,7 @@ class _AddBudgetPageState extends State<AddBudgetPage> {
   Widget build(BuildContext context) {
     pages = [
       AddBudgetPage2(
-        isEdit: false,
+        isEdit: widget.isEdit,
         budgetDTO: budgetDTO,
         goToCategory: () {
           setState(() {
